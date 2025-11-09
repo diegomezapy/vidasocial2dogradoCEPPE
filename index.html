@@ -1,0 +1,2063 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación Interactiva de Ciencias Sociales - 2º Grado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4e73df;
+            --secondary: #1cc88a;
+            --warning: #f6c23e;
+            --danger: #e74a3b;
+            --info: #36b9cc;
+            --light: #f8f9fc;
+            --dark: #5a5c69;
+            --success: #1cc88a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', cursive;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,213.3C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .welcome-screen, .result-screen, .section-screen, .question-screen {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome-screen {
+            text-align: center;
+        }
+
+        .welcome-screen h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-screen p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Fredoka', cursive;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background-color: #3a5fc7;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #15a67c;
+        }
+
+        .progress-container {
+            margin-bottom: 2rem;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .score-display {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .score-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .score-item i {
+            color: var(--warning);
+        }
+
+        .section-screen h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .question-container {
+            margin-bottom: 2rem;
+        }
+
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option {
+            padding: 1rem;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background-color: rgba(78, 115, 223, 0.05);
+            transform: translateY(-3px);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(78, 115, 223, 0.1);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background-color: rgba(28, 200, 138, 0.1);
+        }
+
+        .option.incorrect {
+            border-color: var(--danger);
+            background-color: rgba(231, 74, 59, 0.1);
+        }
+
+        .drag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .draggable {
+            padding: 0.8rem 1.2rem;
+            background-color: var(--info);
+            color: white;
+            border-radius: 8px;
+            cursor: grab;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            user-select: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .draggable:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .draggable.dragging {
+            opacity: 0.8;
+            cursor: grabbing;
+            transform: scale(1.05);
+            z-index: 100;
+        }
+
+        .drop-zone {
+            min-height: 50px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .drop-zone.drag-over {
+            border-color: var(--primary);
+            background-color: rgba(78, 115, 223, 0.05);
+        }
+
+        .drop-zone.correct {
+            border-color: var(--success);
+            background-color: rgba(28, 200, 138, 0.1);
+        }
+
+        .drop-zone.incorrect {
+            border-color: var(--danger);
+            background-color: rgba(231, 74, 59, 0.1);
+        }
+
+        .map-container {
+            position: relative;
+            margin: 2rem auto;
+            max-width: 800px;
+            background-color: #f0f8ff;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        #paraguay-map {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .department {
+            fill: #c3dff9;
+            stroke: #4e73df;
+            stroke-width: 1.5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .department:hover {
+            fill: #a0c8f0;
+        }
+
+        .department.active {
+            fill: #4e73df;
+        }
+
+        .department.correct {
+            fill: var(--success);
+        }
+
+        .department.incorrect {
+            fill: var(--danger);
+        }
+
+        .capital-marker {
+            fill: var(--warning);
+            stroke: #fff;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .capital-marker:hover {
+            fill: #e0b135;
+            transform: scale(1.1);
+        }
+
+        .capital-label {
+            font-size: 10px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+            fill: #333;
+        }
+
+        .capital-draggable {
+            position: absolute;
+            padding: 0.5rem 1rem;
+            background-color: var(--warning);
+            color: white;
+            border-radius: 20px;
+            cursor: grab;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            user-select: none;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .capital-draggable.dragging {
+            opacity: 0.8;
+            cursor: grabbing;
+            transform: scale(1.05);
+            z-index: 100;
+        }
+
+        .capital-draggable.correct {
+            background-color: var(--success);
+        }
+
+        .capital-draggable.incorrect {
+            background-color: var(--danger);
+            animation: bounce 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        .feedback {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background-color: rgba(28, 200, 138, 0.1);
+            border-left: 5px solid var(--success);
+            color: var(--success);
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(231, 74, 59, 0.1);
+            border-left: 5px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .result-screen {
+            text-align: center;
+        }
+
+        .result-screen h2 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .result-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--warning);
+            margin: 1.5rem 0;
+        }
+
+        .result-message {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .result-details {
+            background-color: #f8f9fc;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .result-details h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .result-details ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .result-details li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .result-details li:last-child {
+            border-bottom: none;
+        }
+
+        .result-details .correct {
+            color: var(--success);
+        }
+
+        .result-details .incorrect {
+            color: var(--danger);
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Fredoka', cursive;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
+        }
+
+        .check-answer {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Fredoka', cursive;
+            margin-bottom: 1.5rem;
+        }
+
+        .check-answer:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #15a67c;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .timer {
+            font-size: 1.2rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .timer i {
+            color: var(--warning);
+        }
+
+        .clock-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .clock {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 10px solid var(--primary);
+            position: relative;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .clock-center {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .hour-hand, .minute-hand {
+            position: absolute;
+            background-color: var(--dark);
+            transform-origin: bottom center;
+            bottom: 50%;
+            left: 50%;
+            border-radius: 10px;
+        }
+
+        .hour-hand {
+            width: 6px;
+            height: 60px;
+            margin-left: -3px;
+        }
+
+        .minute-hand {
+            width: 4px;
+            height: 80px;
+            margin-left: -2px;
+        }
+
+        .clock-number {
+            position: absolute;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .number-12 {
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .number-3 {
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .number-6 {
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .number-9 {
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background-color: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .memory-card:hover {
+            transform: scale(1.05);
+        }
+
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            background-color: var(--success);
+            pointer-events: none;
+        }
+
+        .memory-card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            border-radius: 10px;
+        }
+
+        .memory-card-back {
+            background-color: var(--primary);
+            color: white;
+            font-size: 2rem;
+        }
+
+        .memory-card-front {
+            background-color: white;
+            transform: rotateY(180deg);
+            font-size: 1.5rem;
+            border: 2px solid var(--primary);
+        }
+
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--warning);
+            top: -10px;
+            animation: confetti-fall 5s linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .memory-game {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-graduation-cap"></i> Evaluación Interactiva de Ciencias Sociales</h1>
+        <p class="subtitle">2.º Grado de la Educación Escolar Básica</p>
+    </header>
+
+    <main>
+        <!-- Welcome Screen -->
+        <section id="welcome-screen" class="welcome-screen">
+            <h2><i class="fas fa-smile-beam"></i> ¡Bienvenido a tu evaluación interactiva!</h2>
+            <p>¡Hola! Estás a punto de comenzar una divertida aventura de aprendizaje sobre Ciencias Sociales de Paraguay.</p>
+            <p>Responde las preguntas de manera interactiva y demuestra todo lo que sabes. ¡No te preocupes si cometes errores, podrás intentarlo de nuevo hasta que logres un excelente resultado!</p>
+            <div class="buttons-container">
+                <button class="btn" id="start-btn">
+                    <i class="fas fa-play"></i> Comenzar Evaluación
+                </button>
+            </div>
+        </section>
+
+        <!-- Section Screen -->
+        <section id="section-screen" class="section-screen hidden">
+            <h2 id="section-title"></h2>
+            <p id="section-description" class="section-description"></p>
+            <div class="progress-container">
+                <div class="progress-bar" id="section-progress">0%</div>
+            </div>
+            <div class="buttons-container">
+                <button class="btn" id="start-section-btn">
+                    <i class="fas fa-arrow-right"></i> Comenzar Sección
+                </button>
+            </div>
+        </section>
+
+        <!-- Question Screen -->
+        <section id="question-screen" class="question-screen hidden">
+            <div class="score-display">
+                <div class="score-item">
+                    <i class="fas fa-star"></i>
+                    <span>Puntuación: <span id="current-score">0</span></span>
+                </div>
+                <div class="timer">
+                    <i class="fas fa-clock"></i>
+                    <span id="timer">00:00</span>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="question-progress">0%</div>
+            </div>
+            <div id="question-container" class="question-container">
+                <!-- Questions will be dynamically loaded here -->
+            </div>
+            <div id="feedback" class="feedback"></div>
+            <div class="buttons-container">
+                <button class="btn hidden" id="next-question-btn">
+                    <i class="fas fa-arrow-right"></i> Siguiente Pregunta
+                </button>
+                <button class="btn hidden" id="finish-section-btn">
+                    <i class="fas fa-check-circle"></i> Finalizar Sección
+                </button>
+            </div>
+        </section>
+
+        <!-- Result Screen -->
+        <section id="result-screen" class="result-screen hidden">
+            <h2><i class="fas fa-trophy"></i> ¡Has completado la evaluación!</h2>
+            <div class="result-score" id="final-score">0%</div>
+            <p class="result-message" id="result-message"></p>
+            <div class="result-details">
+                <h3>Resumen de respuestas</h3>
+                <ul id="result-details-list">
+                    <!-- Result details will be dynamically loaded here -->
+                </ul>
+            </div>
+            <div class="buttons-container">
+                <button class="btn btn-secondary" id="retry-btn">
+                    <i class="fas fa-redo"></i> Intentar de Nuevo
+                </button>
+                <button class="btn" id="home-btn">
+                    <i class="fas fa-home"></i> Página Principal
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2023 Evaluación Interactiva de Ciencias Sociales - 2º Grado</p>
+    </footer>
+
+    <script>
+        // Game state
+        let currentSection = 0;
+        let currentQuestion = 0;
+        let score = 0;
+        let answers = [];
+        let startTime = null;
+        let timerInterval = null;
+        let draggedElement = null;
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let selectedCheckboxes = [];
+        let originalPositions = {};
+
+        // Sections data
+        const sections = [
+            {
+                title: "A. Los departamentos del Paraguay y sus capitales",
+                description: "En esta sección pondrás a prueba tus conocimientos sobre los departamentos de Paraguay y sus capitales. ¡Arrastra y suelta para responder!",
+                questions: [
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuántos departamentos tiene Paraguay?",
+                        options: ["16", "17", "18"],
+                        answer: 1,
+                        feedback: {
+                            correct: "¡Correcto! Paraguay tiene 17 departamentos.",
+                            incorrect: "No es correcto. Paraguay tiene 17 departamentos."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "La capital del Paraguay es:",
+                        options: ["Asunción", "Concepción", "Ciudad del Este"],
+                        answer: 0,
+                        feedback: {
+                            correct: "¡Correcto! La capital del Paraguay es Asunción.",
+                            incorrect: "No es correcto. La capital del Paraguay es Asunción."
+                        }
+                    },
+                    {
+                        type: "true-false",
+                        question: "Cada departamento tiene una capital.",
+                        answer: true,
+                        feedback: {
+                            correct: "¡Correcto! Cada departamento tiene su propia capital.",
+                            incorrect: "No es correcto. Cada departamento tiene su propia capital."
+                        }
+                    },
+                    {
+                        type: "map-capital-drag",
+                        question: "Arrastra cada capital a su departamento correspondiente:",
+                        items: [
+                            { id: "capital1", text: "Asunción", correctDept: "central" },
+                            { id: "capital2", text: "Ciudad del Este", correctDept: "alto-parana" },
+                            { id: "capital3", text: "Encarnación", correctDept: "itapua" },
+                            { id: "capital4", text: "San Juan Bautista", correctDept: "misiones" },
+                            { id: "capital5", text: "Salto del Guairá", correctDept: "canindeyu" },
+                            { id: "capital6", text: "Fuerte Olimpo", correctDept: "alto-paraguay" }
+                        ],
+                        feedback: {
+                            correct: "¡Excelente! Has relacionado correctamente las capitales con sus departamentos.",
+                            incorrect: "No es correcto. Revisa las correspondencias entre capitales y departamentos."
+                        }
+                    }
+                ]
+            },
+            {
+                title: "B. Regiones y mapa físico del Paraguay",
+                description: "En esta sección explorarás las regiones y el mapa físico de Paraguay. ¡Prepárate para un viaje geográfico interactivo!",
+                questions: [
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuántas regiones principales tiene Paraguay?",
+                        options: ["1", "2", "3"],
+                        answer: 1,
+                        feedback: {
+                            correct: "¡Correcto! Paraguay tiene 2 regiones principales: Oriental y Occidental.",
+                            incorrect: "No es correcto. Paraguay tiene 2 regiones principales: Oriental y Occidental."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿Qué río divide al país en dos regiones?",
+                        options: ["Río Monday", "Río Paraguay", "Río Tebicuary"],
+                        answer: 1,
+                        feedback: {
+                            correct: "¡Correcto! El Río Paraguay divide al país en dos regiones.",
+                            incorrect: "No es correcto. El Río Paraguay divide al país en dos regiones."
+                        }
+                    },
+                    {
+                        type: "checkbox",
+                        question: "Marca los elementos que pertenecen a un mapa físico:",
+                        options: ["Ríos", "Cordilleras", "Rutas", "Montes o cerros", "Hospitales", "Lagos o lagunas"],
+                        answer: [0, 1, 3, 5],
+                        feedback: {
+                            correct: "¡Correcto! Los elementos que pertenecen a un mapa físico son: Ríos, Cordilleras, Montes o cerros y Lagos o lagunas.",
+                            incorrect: "No es correcto. Los elementos que pertenecen a un mapa físico son: Ríos, Cordilleras, Montes o cerros y Lagos o lagunas."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "La Región Oriental se encuentra:",
+                        options: [
+                            "A la derecha del río Paraguay en el mapa.",
+                            "A la izquierda del río Paraguay en el mapa."
+                        ],
+                        answer: 0,
+                        feedback: {
+                            correct: "¡Correcto! La Región Oriental se encuentra a la derecha del río Paraguay en el mapa.",
+                            incorrect: "No es correcto. La Región Oriental se encuentra a la derecha del río Paraguay en el mapa."
+                        }
+                    },
+                    {
+                        type: "map-region-drag",
+                        question: "Arrastra los nombres de las regiones a su lugar correcto en el mapa:",
+                        items: [
+                            { id: "reg1", text: "Región Oriental", correctRegion: "east" },
+                            { id: "reg2", text: "Región Occidental", correctRegion: "west" }
+                        ],
+                        feedback: {
+                            correct: "¡Excelente! Has ubicado correctamente las regiones en el mapa.",
+                            incorrect: "No es correcto. Revisa la ubicación de las regiones en el mapa."
+                        }
+                    }
+                ]
+            },
+            {
+                title: "C. Medición del tiempo",
+                description: "En esta sección aprenderás sobre la medición del tiempo. ¡Prepárate para responder preguntas sobre relojes, calendarios y más!",
+                questions: [
+                    {
+                        type: "checkbox",
+                        question: "Selecciona los objetos que sirven para medir el tiempo:",
+                        options: ["reloj digital", "piedra", "calendario", "martillo", "reloj de pared"],
+                        answer: [0, 2, 4],
+                        feedback: {
+                            correct: "¡Correcto! Los objetos que sirven para medir el tiempo son: reloj digital, calendario y reloj de pared.",
+                            incorrect: "No es correcto. Los objetos que sirven para medir el tiempo son: reloj digital, calendario y reloj de pared."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuántos años tiene un lustro?",
+                        options: ["5", "10", "15"],
+                        answer: 0,
+                        feedback: {
+                            correct: "¡Correcto! Un lustro es igual a 5 años.",
+                            incorrect: "No es correcto. Un lustro es igual a 5 años."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuántos años tiene una década?",
+                        options: ["5", "10", "20"],
+                        answer: 1,
+                        feedback: {
+                            correct: "¡Correcto! Una década es igual a 10 años.",
+                            incorrect: "No es correcto. Una década es igual a 10 años."
+                        }
+                    },
+                    {
+                        type: "clock",
+                        question: "Selecciona la hora que muestra este reloj:",
+                        hour: 3,
+                        minute: 25,
+                        options: ["2:30", "3:25", "3:30"],
+                        answer: 1,
+                        feedback: {
+                            correct: "¡Correcto! El reloj muestra las 3:25.",
+                            incorrect: "No es correcto. El reloj muestra las 3:25."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuántos meses tiene un año?",
+                        options: ["10", "12", "14"],
+                        answer: 1,
+                        feedback: {
+                            correct: "¡Correcto! Un año tiene 12 meses.",
+                            incorrect: "No es correcto. Un año tiene 12 meses."
+                        }
+                    }
+                ]
+            },
+            {
+                title: "D. Nuestra historia, pueblos originarios y españoles",
+                description: "En esta sección explorarás la historia de Paraguay, sus pueblos originarios y la llegada de los españoles. ¡Viaja en el tiempo y descubre nuestro pasado!",
+                questions: [
+                    {
+                        type: "multiple-choice",
+                        question: "¿Con qué cazaban los pueblos originarios?",
+                        options: ["Olla de barro", "Arco y flechas", "Barco"],
+                        answer: 1,
+                        feedback: {
+                            correct: "¡Correcto! Los pueblos originarios cazaban con arco y flechas.",
+                            incorrect: "No es correcto. Los pueblos originarios cazaban con arco y flechas."
+                        }
+                    },
+                    {
+                        type: "true-false",
+                        question: "Los guaraní vivían al este del río Paraguay.",
+                        answer: true,
+                        feedback: {
+                            correct: "¡Correcto! Los guaraní vivían al este del río Paraguay.",
+                            incorrect: "No es correcto. Los guaraní vivían al este del río Paraguay."
+                        }
+                    },
+                    {
+                        type: "true-false",
+                        question: "Los guaraní eran un pueblo nómada.",
+                        answer: false,
+                        feedback: {
+                            correct: "¡Correcto! Los guaraní eran un pueblo sedentario, no nómada.",
+                            incorrect: "No es correcto. Los guaraní eran un pueblo sedentario, no nómada."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿En qué año llegaron los españoles a América?",
+                        options: ["1492", "1500", "1520"],
+                        answer: 0,
+                        feedback: {
+                            correct: "¡Correcto! Los españoles llegaron a América en 1492.",
+                            incorrect: "No es correcto. Los españoles llegaron a América en 1492."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "Selecciona un animal doméstico que trajeron los españoles:",
+                        options: ["vaca", "jaguar", "tucán"],
+                        answer: 0,
+                        feedback: {
+                            correct: "¡Correcto! La vaca es un animal doméstico que trajeron los españoles.",
+                            incorrect: "No es correcto. La vaca es un animal doméstico que trajeron los españoles."
+                        }
+                    }
+                ]
+            },
+            {
+                title: "E. Integración y comprensión",
+                description: "En esta sección pondrás a prueba todo lo que has aprendido. ¡Demuestra tus conocimientos sobre la geografía, historia y cultura de Paraguay!",
+                questions: [
+                    {
+                        type: "multiple-choice",
+                        question: "Los pueblos originarios que vivían al este del río Paraguay se llaman:",
+                        options: ["guaraní", "españoles"],
+                        answer: 0,
+                        feedback: {
+                            correct: "¡Correcto! Los pueblos originarios que vivían al este del río Paraguay se llaman guaraní.",
+                            incorrect: "No es correcto. Los pueblos originarios que vivían al este del río Paraguay se llaman guaraní."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "Los pueblos que se movían de un lugar a otro en busca de alimentos se llaman:",
+                        options: ["sedentarios", "nómadas"],
+                        answer: 1,
+                        feedback: {
+                            correct: "¡Correcto! Los pueblos que se movían de un lugar a otro en busca de alimentos se llaman nómadas.",
+                            incorrect: "No es correcto. Los pueblos que se movían de un lugar a otro en busca de alimentos se llaman nómadas."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "La lengua ____________________________ es un aporte importante de los pueblos originarios.",
+                        options: ["español", "guaraní", "portugués"],
+                        answer: 1,
+                        feedback: {
+                            correct: "¡Correcto! La lengua guaraní es un aporte importante de los pueblos originarios.",
+                            incorrect: "No es correcto. La lengua guaraní es un aporte importante de los pueblos originarios."
+                        }
+                    },
+                    {
+                        type: "true-false",
+                        question: "La mezcla de culturas formó la sociedad paraguaya actual.",
+                        answer: true,
+                        feedback: {
+                            correct: "¡Correcto! La mezcla de culturas formó la sociedad paraguaya actual.",
+                            incorrect: "No es correcto. La mezcla de culturas formó la sociedad paraguaya actual."
+                        }
+                    },
+                    {
+                        type: "memory-game",
+                        question: "Juego de memoria: Encuentra los pares de departamentos y sus capitales",
+                        pairs: [
+                            { id: 1, front: "Alto Paraná", back: "Ciudad del Este" },
+                            { id: 2, front: "Central", back: "Areguá" },
+                            { id: 3, front: "Itapúa", back: "Encarnación" },
+                            { id: 4, front: "Misiones", back: "San Juan Bautista" }
+                        ],
+                        feedback: {
+                            correct: "¡Excelente! Has encontrado todos los pares de departamentos y sus capitales.",
+                            incorrect: "No es correcto. Sigue intentando encontrar todos los pares de departamentos y sus capitales."
+                        }
+                    }
+                ]
+            }
+        ];
+
+        // DOM elements
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const sectionScreen = document.getElementById('section-screen');
+        const questionScreen = document.getElementById('question-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const startBtn = document.getElementById('start-btn');
+        const startSectionBtn = document.getElementById('start-section-btn');
+        const nextQuestionBtn = document.getElementById('next-question-btn');
+        const finishSectionBtn = document.getElementById('finish-section-btn');
+        const retryBtn = document.getElementById('retry-btn');
+        const homeBtn = document.getElementById('home-btn');
+        const questionContainer = document.getElementById('question-container');
+        const feedback = document.getElementById('feedback');
+        const currentScore = document.getElementById('current-score');
+        const timer = document.getElementById('timer');
+        const sectionProgress = document.getElementById('section-progress');
+        const questionProgress = document.getElementById('question-progress');
+        const sectionTitle = document.getElementById('section-title');
+        const sectionDescription = document.getElementById('section-description');
+        const finalScore = document.getElementById('final-score');
+        const resultMessage = document.getElementById('result-message');
+        const resultDetailsList = document.getElementById('result-details-list');
+
+        // Event listeners
+        startBtn.addEventListener('click', startEvaluation);
+        startSectionBtn.addEventListener('click', startSection);
+        nextQuestionBtn.addEventListener('click', nextQuestion);
+        finishSectionBtn.addEventListener('click', finishSection);
+        retryBtn.addEventListener('click', retryEvaluation);
+        homeBtn.addEventListener('click', goToHome);
+
+        // Functions
+        function startEvaluation() {
+            welcomeScreen.classList.add('hidden');
+            sectionScreen.classList.remove('hidden');
+            currentSection = 0;
+            currentQuestion = 0;
+            score = 0;
+            answers = [];
+            showSection();
+        }
+
+        function showSection() {
+            const section = sections[currentSection];
+            sectionTitle.textContent = section.title;
+            sectionDescription.textContent = section.description;
+            sectionProgress.style.width = `${(currentSection / sections.length) * 100}%`;
+            sectionProgress.textContent = `${Math.round((currentSection / sections.length) * 100)}%`;
+        }
+
+        function startSection() {
+            sectionScreen.classList.add('hidden');
+            questionScreen.classList.remove('hidden');
+            currentQuestion = 0;
+            showQuestion();
+            startTimer();
+        }
+
+        function showQuestion() {
+            const section = sections[currentSection];
+            const question = section.questions[currentQuestion];
+            
+            questionProgress.style.width = `${(currentQuestion / section.questions.length) * 100}%`;
+            questionProgress.textContent = `${Math.round((currentQuestion / section.questions.length) * 100)}%`;
+            
+            // Clear previous content
+            questionContainer.innerHTML = '';
+            feedback.classList.remove('show');
+            nextQuestionBtn.classList.add('hidden');
+            finishSectionBtn.classList.add('hidden');
+            selectedCheckboxes = [];
+            originalPositions = {};
+            
+            // Render question based on type
+            switch (question.type) {
+                case 'multiple-choice':
+                    renderMultipleChoice(question);
+                    break;
+                case 'true-false':
+                    renderTrueFalse(question);
+                    break;
+                case 'checkbox':
+                    renderCheckbox(question);
+                    break;
+                case 'map-capital-drag':
+                    renderMapCapitalDrag(question);
+                    break;
+                case 'map-region-drag':
+                    renderMapRegionDrag(question);
+                    break;
+                case 'clock':
+                    renderClock(question);
+                    break;
+                case 'memory-game':
+                    renderMemoryGame(question);
+                    break;
+                default:
+                    console.error('Unknown question type:', question.type);
+            }
+        }
+
+        function renderMultipleChoice(question) {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+            questionDiv.textContent = question.question;
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option;
+                optionDiv.dataset.index = index;
+                optionDiv.addEventListener('click', () => selectOption(index, question));
+                optionsDiv.appendChild(optionDiv);
+            });
+            
+            questionContainer.appendChild(questionDiv);
+            questionContainer.appendChild(optionsDiv);
+        }
+
+        function renderTrueFalse(question) {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+            questionDiv.textContent = question.question;
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            
+            const trueOption = document.createElement('div');
+            trueOption.className = 'option';
+            trueOption.textContent = 'Verdadero';
+            trueOption.dataset.value = true;
+            trueOption.addEventListener('click', () => selectTrueFalse(true, question));
+            
+            const falseOption = document.createElement('div');
+            falseOption.className = 'option';
+            falseOption.textContent = 'Falso';
+            falseOption.dataset.value = false;
+            falseOption.addEventListener('click', () => selectTrueFalse(false, question));
+            
+            optionsDiv.appendChild(trueOption);
+            optionsDiv.appendChild(falseOption);
+            
+            questionContainer.appendChild(questionDiv);
+            questionContainer.appendChild(optionsDiv);
+        }
+
+        function renderCheckbox(question) {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+            questionDiv.textContent = question.question;
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option;
+                optionDiv.dataset.index = index;
+                optionDiv.addEventListener('click', () => toggleCheckbox(index, optionDiv));
+                optionsDiv.appendChild(optionDiv);
+            });
+            
+            const checkBtn = document.createElement('button');
+            checkBtn.className = 'check-answer';
+            checkBtn.textContent = 'Verificar respuestas';
+            checkBtn.addEventListener('click', () => checkCheckboxAnswer(question));
+            
+            questionContainer.appendChild(questionDiv);
+            questionContainer.appendChild(optionsDiv);
+            questionContainer.appendChild(checkBtn);
+        }
+
+        function renderMapCapitalDrag(question) {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+            questionDiv.textContent = question.question;
+            
+            const mapContainer = document.createElement('div');
+            mapContainer.className = 'map-container';
+            
+            // Create SVG map of Paraguay with departments
+            const svgNS = "http://www.w3.org/2000/svg";
+            const svg = document.createElementNS(svgNS, "svg");
+            svg.setAttribute("id", "paraguay-map");
+            svg.setAttribute("viewBox", "0 0 800 600");
+            
+            // Define department paths (simplified representation)
+            const departments = [
+                { id: "central", name: "Central", path: "M400,300 L450,280 L480,320 L430,340 Z" },
+                { id: "alto-parana", name: "Alto Paraná", path: "M500,280 L550,260 L580,300 L530,320 Z" },
+                { id: "itapua", name: "Itapúa", path: "M480,320 L530,300 L560,340 L510,360 Z" },
+                { id: "misiones", name: "Misiones", path: "M430,340 L480,320 L510,360 L460,380 Z" },
+                { id: "canindeyu", name: "Canindeyú", path: "M450,280 L500,260 L530,300 L480,320 Z" },
+                { id: "alto-paraguay", name: "Alto Paraguay", path: "M300,200 L350,180 L380,220 L330,240 Z" }
+            ];
+            
+            departments.forEach(dept => {
+                const path = document.createElementNS(svgNS, "path");
+                path.setAttribute("class", "department");
+                path.setAttribute("id", dept.id);
+                path.setAttribute("d", dept.path);
+                path.setAttribute("data-name", dept.name);
+                svg.appendChild(path);
+            });
+            
+            mapContainer.appendChild(svg);
+            
+            // Create draggable capital elements
+            const dragContainer = document.createElement('div');
+            dragContainer.className = 'drag-container';
+            
+            question.items.forEach(item => {
+                const draggable = document.createElement('div');
+                draggable.className = 'capital-draggable';
+                draggable.textContent = item.text;
+                draggable.draggable = true;
+                draggable.dataset.id = item.id;
+                draggable.dataset.correctDept = item.correctDept;
+                
+                draggable.addEventListener('dragstart', dragStartCapital);
+                draggable.addEventListener('dragend', dragEndCapital);
+                
+                // Store original position
+                originalPositions[item.id] = {
+                    parent: dragContainer,
+                    element: draggable
+                };
+                
+                dragContainer.appendChild(draggable);
+            });
+            
+            const checkBtn = document.createElement('button');
+            checkBtn.className = 'check-answer';
+            checkBtn.textContent = 'Verificar respuestas';
+            checkBtn.addEventListener('click', () => checkMapCapitalDragAnswer(question));
+            
+            questionContainer.appendChild(questionDiv);
+            questionContainer.appendChild(dragContainer);
+            questionContainer.appendChild(mapContainer);
+            questionContainer.appendChild(checkBtn);
+            
+            // Add event listeners to departments for drop
+            departments.forEach(dept => {
+                const deptElement = document.getElementById(dept.id);
+                deptElement.addEventListener('dragover', dragOverCapital);
+                deptElement.addEventListener('drop', dropCapital);
+                deptElement.addEventListener('dragleave', dragLeaveCapital);
+            });
+        }
+
+        function renderMapRegionDrag(question) {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+            questionDiv.textContent = question.question;
+            
+            const mapContainer = document.createElement('div');
+            mapContainer.className = 'map-container';
+            
+            // Create SVG map of Paraguay with regions
+            const svgNS = "http://www.w3.org/2000/svg";
+            const svg = document.createElementNS(svgNS, "svg");
+            svg.setAttribute("id", "paraguay-map");
+            svg.setAttribute("viewBox", "0 0 800 600");
+            
+            // Define region paths (simplified representation)
+            const regions = [
+                { id: "east", name: "Región Oriental", path: "M400,100 L700,150 L650,500 L350,450 Z", fill: "#c3dff9" },
+                { id: "west", name: "Región Occidental", path: "M100,150 L400,100 L350,450 L50,400 Z", fill: "#e9d8c8" }
+            ];
+            
+            regions.forEach(region => {
+                const path = document.createElementNS(svgNS, "path");
+                path.setAttribute("class", "department");
+                path.setAttribute("id", region.id);
+                path.setAttribute("d", region.path);
+                path.setAttribute("fill", region.fill);
+                path.setAttribute("data-name", region.name);
+                svg.appendChild(path);
+            });
+            
+            // Add river representation
+            const river = document.createElementNS(svgNS, "path");
+            river.setAttribute("d", "M400,100 L400,450");
+            river.setAttribute("stroke", "#4e73df");
+            river.setAttribute("stroke-width", "5");
+            river.setAttribute("stroke-dasharray", "10,5");
+            river.setAttribute("fill", "none");
+            svg.appendChild(river);
+            
+            mapContainer.appendChild(svg);
+            
+            // Create draggable region elements
+            const dragContainer = document.createElement('div');
+            dragContainer.className = 'drag-container';
+            
+            question.items.forEach(item => {
+                const draggable = document.createElement('div');
+                draggable.className = 'capital-draggable';
+                draggable.textContent = item.text;
+                draggable.draggable = true;
+                draggable.dataset.id = item.id;
+                draggable.dataset.correctRegion = item.correctRegion;
+                
+                draggable.addEventListener('dragstart', dragStartCapital);
+                draggable.addEventListener('dragend', dragEndCapital);
+                
+                // Store original position
+                originalPositions[item.id] = {
+                    parent: dragContainer,
+                    element: draggable
+                };
+                
+                dragContainer.appendChild(draggable);
+            });
+            
+            const checkBtn = document.createElement('button');
+            checkBtn.className = 'check-answer';
+            checkBtn.textContent = 'Verificar respuestas';
+            checkBtn.addEventListener('click', () => checkMapRegionDragAnswer(question));
+            
+            questionContainer.appendChild(questionDiv);
+            questionContainer.appendChild(dragContainer);
+            questionContainer.appendChild(mapContainer);
+            questionContainer.appendChild(checkBtn);
+            
+            // Add event listeners to regions for drop
+            regions.forEach(region => {
+                const regionElement = document.getElementById(region.id);
+                regionElement.addEventListener('dragover', dragOverCapital);
+                regionElement.addEventListener('drop', dropCapital);
+                regionElement.addEventListener('dragleave', dragLeaveCapital);
+            });
+        }
+
+        function renderClock(question) {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+            questionDiv.textContent = question.question;
+            
+            const clockContainer = document.createElement('div');
+            clockContainer.className = 'clock-container';
+            
+            const clock = document.createElement('div');
+            clock.className = 'clock';
+            
+            const clockCenter = document.createElement('div');
+            clockCenter.className = 'clock-center';
+            
+            const hourHand = document.createElement('div');
+            hourHand.className = 'hour-hand';
+            hourHand.style.transform = `rotate(${(question.hour % 12) * 30 + (question.minute / 60) * 30}deg)`;
+            
+            const minuteHand = document.createElement('div');
+            minuteHand.className = 'minute-hand';
+            minuteHand.style.transform = `rotate(${question.minute * 6}deg)`;
+            
+            const number12 = document.createElement('div');
+            number12.className = 'clock-number number-12';
+            number12.textContent = '12';
+            
+            const number3 = document.createElement('div');
+            number3.className = 'clock-number number-3';
+            number3.textContent = '3';
+            
+            const number6 = document.createElement('div');
+            number6.className = 'clock-number number-6';
+            number6.textContent = '6';
+            
+            const number9 = document.createElement('div');
+            number9.className = 'clock-number number-9';
+            number9.textContent = '9';
+            
+            clock.appendChild(hourHand);
+            clock.appendChild(minuteHand);
+            clock.appendChild(clockCenter);
+            clock.appendChild(number12);
+            clock.appendChild(number3);
+            clock.appendChild(number6);
+            clock.appendChild(number9);
+            
+            clockContainer.appendChild(clock);
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option;
+                optionDiv.dataset.index = index;
+                optionDiv.addEventListener('click', () => selectOption(index, question));
+                optionsDiv.appendChild(optionDiv);
+            });
+            
+            questionContainer.appendChild(questionDiv);
+            questionContainer.appendChild(clockContainer);
+            questionContainer.appendChild(optionsDiv);
+        }
+
+        function renderMemoryGame(question) {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+            questionDiv.textContent = question.question;
+            
+            const memoryGame = document.createElement('div');
+            memoryGame.className = 'memory-game';
+            
+            // Create cards for each pair (front and back)
+            const cards = [];
+            question.pairs.forEach(pair => {
+                cards.push({ id: pair.id, text: pair.front, type: 'front' });
+                cards.push({ id: pair.id, text: pair.back, type: 'back' });
+            });
+            
+            // Shuffle cards
+            cards.sort(() => Math.random() - 0.5);
+            
+            cards.forEach((card, index) => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'memory-card';
+                cardDiv.dataset.id = card.id;
+                cardDiv.dataset.index = index;
+                
+                const cardBack = document.createElement('div');
+                cardBack.className = 'memory-card-face memory-card-back';
+                cardBack.innerHTML = '<i class="fas fa-question"></i>';
+                
+                const cardFront = document.createElement('div');
+                cardFront.className = 'memory-card-face memory-card-front';
+                cardFront.textContent = card.text;
+                
+                cardDiv.appendChild(cardBack);
+                cardDiv.appendChild(cardFront);
+                
+                cardDiv.addEventListener('click', () => flipCard(cardDiv, card.id, question));
+                
+                memoryGame.appendChild(cardDiv);
+            });
+            
+            questionContainer.appendChild(questionDiv);
+            questionContainer.appendChild(memoryGame);
+            
+            // Reset memory game state
+            memoryCards = cards;
+            flippedCards = [];
+            matchedPairs = 0;
+        }
+
+        function selectOption(index, question) {
+            const options = document.querySelectorAll('.option');
+            
+            // Remove previous selection
+            options.forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            options[index].classList.add('selected');
+            
+            // Check answer
+            const isCorrect = index === question.answer;
+            
+            // Show feedback
+            showFeedback(isCorrect, question.feedback);
+            
+            // Mark correct/incorrect options
+            options[index].classList.add(isCorrect ? 'correct' : 'incorrect');
+            if (!isCorrect) {
+                options[question.answer].classList.add('correct');
+            }
+            
+            // Disable options
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+            
+            // Update score
+            if (isCorrect) {
+                score++;
+                currentScore.textContent = score;
+            }
+            
+            // Store answer
+            answers.push({
+                question: question.question,
+                userAnswer: question.options[index],
+                correctAnswer: question.options[question.answer],
+                isCorrect: isCorrect
+            });
+            
+            // Show next button or finish button
+            if (currentQuestion < sections[currentSection].questions.length - 1) {
+                nextQuestionBtn.classList.remove('hidden');
+            } else {
+                finishSectionBtn.classList.remove('hidden');
+            }
+        }
+
+        function selectTrueFalse(value, question) {
+            const options = document.querySelectorAll('.option');
+            
+            // Remove previous selection
+            options.forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            options[value ? 0 : 1].classList.add('selected');
+            
+            // Check answer
+            const isCorrect = value === question.answer;
+            
+            // Show feedback
+            showFeedback(isCorrect, question.feedback);
+            
+            // Mark correct/incorrect options
+            options[value ? 0 : 1].classList.add(isCorrect ? 'correct' : 'incorrect');
+            if (!isCorrect) {
+                options[question.answer ? 0 : 1].classList.add('correct');
+            }
+            
+            // Disable options
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+            
+            // Update score
+            if (isCorrect) {
+                score++;
+                currentScore.textContent = score;
+            }
+            
+            // Store answer
+            answers.push({
+                question: question.question,
+                userAnswer: value ? 'Verdadero' : 'Falso',
+                correctAnswer: question.answer ? 'Verdadero' : 'Falso',
+                isCorrect: isCorrect
+            });
+            
+            // Show next button or finish button
+            if (currentQuestion < sections[currentSection].questions.length - 1) {
+                nextQuestionBtn.classList.remove('hidden');
+            } else {
+                finishSectionBtn.classList.remove('hidden');
+            }
+        }
+
+        function toggleCheckbox(index, optionDiv) {
+            if (selectedCheckboxes.includes(index)) {
+                selectedCheckboxes = selectedCheckboxes.filter(i => i !== index);
+                optionDiv.classList.remove('selected');
+            } else {
+                selectedCheckboxes.push(index);
+                optionDiv.classList.add('selected');
+            }
+        }
+
+        function checkCheckboxAnswer(question) {
+            const isCorrect = JSON.stringify(selectedCheckboxes.sort()) === JSON.stringify(question.answer.sort());
+            
+            showFeedback(isCorrect, question.feedback);
+            
+            // Mark correct/incorrect options
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                if (question.answer.includes(index)) {
+                    option.classList.add('correct');
+                } else if (selectedCheckboxes.includes(index)) {
+                    option.classList.add('incorrect');
+                }
+                option.style.pointerEvents = 'none';
+            });
+            
+            // Update score
+            if (isCorrect) {
+                score++;
+                currentScore.textContent = score;
+            }
+            
+            // Store answer
+            const userAnswers = selectedCheckboxes.map(i => question.options[i]).join(', ');
+            const correctAnswers = question.answer.map(i => question.options[i]).join(', ');
+            
+            answers.push({
+                question: question.question,
+                userAnswer: userAnswers,
+                correctAnswer: correctAnswers,
+                isCorrect: isCorrect
+            });
+            
+            // Disable check button
+            const checkBtn = document.querySelector('.check-answer');
+            checkBtn.disabled = true;
+            
+            // Show next button or finish button
+            if (currentQuestion < sections[currentSection].questions.length - 1) {
+                nextQuestionBtn.classList.remove('hidden');
+            } else {
+                finishSectionBtn.classList.remove('hidden');
+            }
+        }
+
+        function dragStartCapital(e) {
+            draggedElement = e.target;
+            e.target.classList.add('dragging');
+        }
+
+        function dragEndCapital(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function dragOverCapital(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function dragLeaveCapital(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function dropCapital(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            
+            if (draggedElement) {
+                const isCorrect = draggedElement.dataset.correctDept === e.currentTarget.id || 
+                                 draggedElement.dataset.correctRegion === e.currentTarget.id;
+                
+                if (isCorrect) {
+                    // Position the capital element over the department/region
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const mapContainer = document.querySelector('.map-container');
+                    const mapRect = mapContainer.getBoundingClientRect();
+                    
+                    draggedElement.style.position = 'absolute';
+                    draggedElement.style.left = `${rect.left - mapRect.left + rect.width/2 - draggedElement.offsetWidth/2}px`;
+                    draggedElement.style.top = `${rect.top - mapRect.top + rect.height/2 - draggedElement.offsetHeight/2}px`;
+                    
+                    draggedElement.classList.add('correct');
+                    draggedElement.draggable = false;
+                } else {
+                    // Return to original position with bounce animation
+                    draggedElement.classList.add('incorrect');
+                    setTimeout(() => {
+                        draggedElement.classList.remove('incorrect');
+                        const original = originalPositions[draggedElement.dataset.id];
+                        if (original && original.parent) {
+                            original.parent.appendChild(draggedElement);
+                            draggedElement.style.position = '';
+                            draggedElement.style.left = '';
+                            draggedElement.style.top = '';
+                        }
+                    }, 500);
+                }
+            }
+        }
+
+        function checkMapCapitalDragAnswer(question) {
+            const capitals = document.querySelectorAll('.capital-draggable');
+            let allCorrect = true;
+            
+            capitals.forEach(capital => {
+                if (!capital.classList.contains('correct')) {
+                    allCorrect = false;
+                }
+            });
+            
+            showFeedback(allCorrect, question.feedback);
+            
+            // Update score
+            if (allCorrect) {
+                score++;
+                currentScore.textContent = score;
+            }
+            
+            // Store answer
+            const userAnswers = [];
+            const correctAnswers = [];
+            
+            question.items.forEach(item => {
+                const capital = document.querySelector(`[data-id="${item.id}"]`);
+                if (capital && capital.classList.contains('correct')) {
+                    userAnswers.push(`${item.text}: Correcto`);
+                } else {
+                    userAnswers.push(`${item.text}: Incorrecto`);
+                }
+                correctAnswers.push(`${item.text}: ${item.correctDept}`);
+            });
+            
+            answers.push({
+                question: question.question,
+                userAnswer: userAnswers.join(', '),
+                correctAnswer: correctAnswers.join(', '),
+                isCorrect: allCorrect
+            });
+            
+            // Disable check button
+            const checkBtn = document.querySelector('.check-answer');
+            checkBtn.disabled = true;
+            
+            // Show next button or finish button
+            if (currentQuestion < sections[currentSection].questions.length - 1) {
+                nextQuestionBtn.classList.remove('hidden');
+            } else {
+                finishSectionBtn.classList.remove('hidden');
+            }
+        }
+
+        function checkMapRegionDragAnswer(question) {
+            const regions = document.querySelectorAll('.capital-draggable');
+            let allCorrect = true;
+            
+            regions.forEach(region => {
+                if (!region.classList.contains('correct')) {
+                    allCorrect = false;
+                }
+            });
+            
+            showFeedback(allCorrect, question.feedback);
+            
+            // Update score
+            if (allCorrect) {
+                score++;
+                currentScore.textContent = score;
+            }
+            
+            // Store answer
+            const userAnswers = [];
+            const correctAnswers = [];
+            
+            question.items.forEach(item => {
+                const region = document.querySelector(`[data-id="${item.id}"]`);
+                if (region && region.classList.contains('correct')) {
+                    userAnswers.push(`${item.text}: Correcto`);
+                } else {
+                    userAnswers.push(`${item.text}: Incorrecto`);
+                }
+                correctAnswers.push(`${item.text}: ${item.correctRegion}`);
+            });
+            
+            answers.push({
+                question: question.question,
+                userAnswer: userAnswers.join(', '),
+                correctAnswer: correctAnswers.join(', '),
+                isCorrect: allCorrect
+            });
+            
+            // Disable check button
+            const checkBtn = document.querySelector('.check-answer');
+            checkBtn.disabled = true;
+            
+            // Show next button or finish button
+            if (currentQuestion < sections[currentSection].questions.length - 1) {
+                nextQuestionBtn.classList.remove('hidden');
+            } else {
+                finishSectionBtn.classList.remove('hidden');
+            }
+        }
+
+        function flipCard(cardDiv, cardId, question) {
+            // Check if card is already flipped or matched
+            if (cardDiv.classList.contains('flipped') || cardDiv.classList.contains('matched')) {
+                return;
+            }
+            
+            // Check if two cards are already flipped
+            if (flippedCards.length >= 2) {
+                return;
+            }
+            
+            // Flip the card
+            cardDiv.classList.add('flipped');
+            flippedCards.push({ element: cardDiv, id: cardId });
+            
+            // Check if two cards are flipped
+            if (flippedCards.length === 2) {
+                // Check if cards match
+                if (flippedCards[0].id === flippedCards[1].id) {
+                    // Cards match
+                    setTimeout(() => {
+                        flippedCards[0].element.classList.add('matched');
+                        flippedCards[1].element.classList.add('matched');
+                        flippedCards = [];
+                        matchedPairs++;
+                        
+                        // Check if all pairs are matched
+                        if (matchedPairs === question.pairs.length) {
+                            // All pairs matched
+                            const isCorrect = true;
+                            showFeedback(isCorrect, question.feedback);
+                            
+                            // Update score
+                            if (isCorrect) {
+                                score++;
+                                currentScore.textContent = score;
+                            }
+                            
+                            // Store answer
+                            answers.push({
+                                question: question.question,
+                                userAnswer: 'Todos los pares encontrados',
+                                correctAnswer: 'Todos los pares encontrados',
+                                isCorrect: isCorrect
+                            });
+                            
+                            // Show next button or finish button
+                            if (currentQuestion < sections[currentSection].questions.length - 1) {
+                                nextQuestionBtn.classList.remove('hidden');
+                            } else {
+                                finishSectionBtn.classList.remove('hidden');
+                            }
+                        }
+                    }, 1000);
+                } else {
+                    // Cards don't match
+                    setTimeout(() => {
+                        flippedCards[0].element.classList.remove('flipped');
+                        flippedCards[1].element.classList.remove('flipped');
+                        flippedCards = [];
+                    }, 1000);
+                }
+            }
+        }
+
+        function showFeedback(isCorrect, feedback) {
+            const feedbackDiv = document.getElementById('feedback');
+            feedbackDiv.textContent = isCorrect ? feedback.correct : feedback.incorrect;
+            feedbackDiv.className = `feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+            
+            // Add confetti for correct answers
+            if (isCorrect) {
+                createConfetti();
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#4e73df', '#1cc88a', '#f6c23e', '#e74a3b', '#36b9cc'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = `${Math.random() * 10 + 5}px`;
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            showQuestion();
+        }
+
+        function finishSection() {
+            stopTimer();
+            
+            if (currentSection < sections.length - 1) {
+                currentSection++;
+                questionScreen.classList.add('hidden');
+                sectionScreen.classList.remove('hidden');
+                showSection();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            stopTimer();
+            
+            questionScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            const totalQuestions = sections.reduce((sum, section) => sum + section.questions.length, 0);
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            finalScore.textContent = `${percentage}%`;
+            
+            // Set result message based on percentage
+            let message = '';
+            if (percentage >= 90) {
+                message = '¡Excelente! Has demostrado un conocimiento sobresaliente sobre Ciencias Sociales de Paraguay. ¡Sigue así!';
+                createConfetti();
+            } else if (percentage >= 70) {
+                message = '¡Muy bien! Tienes un buen conocimiento sobre Ciencias Sociales de Paraguay. ¡Sigue estudiando para mejorar!';
+            } else if (percentage >= 50) {
+                message = '¡Bien hecho! Has aprobado la evaluación. Te recomendamos repasar algunos temas para fortalecer tus conocimientos.';
+            } else {
+                message = 'Necesitas mejorar tu conocimiento sobre Ciencias Sociales de Paraguay. Te recomendamos estudiar más e intentar la evaluación nuevamente.';
+            }
+            
+            resultMessage.textContent = message;
+            
+            // Show result details
+            resultDetailsList.innerHTML = '';
+            answers.forEach(answer => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div>
+                        <strong>${answer.question}</strong><br>
+                        <small>Tu respuesta: ${answer.userAnswer}</small><br>
+                        <small>Respuesta correcta: ${answer.correctAnswer}</small>
+                    </div>
+                    <div class="${answer.isCorrect ? 'correct' : 'incorrect'}">
+                        <i class="fas fa-${answer.isCorrect ? 'check' : 'times'}"></i>
+                    </div>
+                `;
+                resultDetailsList.appendChild(li);
+            });
+        }
+
+        function retryEvaluation() {
+            resultScreen.classList.add('hidden');
+            welcomeScreen.classList.remove('hidden');
+        }
+
+        function goToHome() {
+            resultScreen.classList.add('hidden');
+            welcomeScreen.classList.remove('hidden');
+        }
+
+        function startTimer() {
+            startTime = Date.now();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function updateTimer() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    </script>
+</body>
+</html>
