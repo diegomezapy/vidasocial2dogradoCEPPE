@@ -2,23 +2,23 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Evaluación Interactiva de Ciencias Sociales - 2.º Grado</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Fuentes e íconos -->
+    <title>Aventura Geográfica del Paraguay</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
-            --primary: #4e73df;
-            --secondary: #1cc88a;
-            --warning: #f6c23e;
+            --primary: #0038a8;
+            --secondary: #ce1126;
+            --accent: #f6c23e;
+            --success: #1cc88a;
             --danger: #e74a3b;
             --info: #36b9cc;
             --light: #f8f9fc;
             --dark: #5a5c69;
-            --success: #1cc88a;
+            --paraguay-red: #ce1126;
+            --paraguay-blue: #0038a8;
+            --paraguay-white: #ffffff;
         }
 
         * {
@@ -28,8 +28,8 @@
         }
 
         body {
-            font-family: 'Fredoka', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Fredoka', cursive;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -38,11 +38,11 @@
         }
 
         header {
-            background-color: var(--primary);
-            color: #fff;
-            padding: 1.2rem;
+            background: linear-gradient(90deg, var(--paraguay-blue), var(--paraguay-red));
+            color: white;
+            padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.12);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             position: relative;
             overflow: hidden;
         }
@@ -50,231 +50,430 @@
         header::before {
             content: "";
             position: absolute;
-            inset: 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,213.3C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom/cover;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,213.3C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
             opacity: 0.9;
-        }
-
-        header h1 {
-            font-size: 2.2rem;
             position: relative;
             z-index: 1;
-        }
-
-        header .subtitle {
-            font-size: 1.1rem;
-            position: relative;
-            z-index: 1;
-            opacity: 0.95;
         }
 
         main {
             flex: 1;
-            padding: 2rem 1rem 2.5rem;
-            max-width: 1200px;
+            padding: 2rem;
+            max-width: 1400px;
             margin: 0 auto;
             width: 100%;
         }
 
-        section {
-            background-color: #fff;
-            border-radius: 18px;
-            padding: 2rem 1.5rem;
+        .welcome-screen, .result-screen, .section-screen, .question-screen {
+            background-color: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            animation: fadeIn 0.45s ease-out;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
         }
 
         .welcome-screen {
             text-align: center;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240,248,255,0.95) 100%);
         }
 
         .welcome-screen h2 {
-            color: var(--primary);
-            font-size: 2rem;
-            margin-bottom: 1rem;
+            color: var(--paraguay-blue);
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
         }
 
         .welcome-screen p {
-            font-size: 1.05rem;
-            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            color: #555;
         }
 
-        .section-screen h2 {
-            color: var(--primary);
-            text-align: center;
-            font-size: 1.9rem;
-            margin-bottom: 0.8rem;
+        .btn {
+            background: linear-gradient(135deg, var(--paraguay-blue), var(--paraguay-red));
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Fredoka', cursive;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
         }
 
-        .section-description {
-            text-align: center;
-            font-size: 1.02rem;
-            margin-bottom: 1.4rem;
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
-        .question-screen .score-display {
+        .btn:active {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--success), #15a67c);
+        }
+
+        .progress-container {
+            margin-bottom: 2rem;
+            background-color: #e9ecef;
+            border-radius: 15px;
+            height: 25px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--paraguay-blue), var(--paraguay-red));
+            width: 0%;
+            transition: width 0.8s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .score-display {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            font-size: 1rem;
-            margin-bottom: 0.6rem;
+            margin-bottom: 2rem;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, rgba(0,56,168,0.1), rgba(206,17,38,0.1));
+            padding: 1rem;
+            border-radius: 15px;
         }
 
         .score-item {
             display: flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.8rem;
         }
 
         .score-item i {
-            color: var(--warning);
+            color: var(--accent);
+            font-size: 1.5rem;
         }
 
-        .timer {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            color: var(--dark);
+        .section-screen h2 {
+            color: var(--paraguay-blue);
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
         }
 
-        .timer i {
-            color: var(--warning);
-        }
-
-        .progress-container {
-            width: 100%;
-            background-color: #e9ecef;
-            border-radius: 999px;
-            height: 18px;
-            overflow: hidden;
-            margin: 0.5rem 0 1.4rem;
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            transition: width 0.4s ease;
+        .section-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            line-height: 1.8;
+            color: #555;
         }
 
         .question-container {
-            margin-bottom: 1.2rem;
+            margin-bottom: 2rem;
         }
 
         .question {
-            font-size: 1.25rem;
-            margin-bottom: 1.3rem;
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
             color: var(--dark);
+            font-weight: 600;
+            text-align: center;
         }
 
         .options {
             display: grid;
-            grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
-            gap: 0.8rem;
-            margin-bottom: 0.8rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .option {
-            padding: 0.85rem 0.9rem;
-            border-radius: 12px;
-            border: 2px solid #e9ecef;
+            padding: 1.2rem;
+            border-radius: 15px;
+            border: 3px solid #e9ecef;
             cursor: pointer;
-            font-size: 1.02rem;
-            background-color: #fff;
-            transition: all 0.22s ease;
+            transition: all 0.3s ease;
             text-align: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+            background: white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
 
         .option:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 9px rgba(0,0,0,0.07);
-            transform: translateY(-2px);
-            background-color: rgba(78,115,223,0.03);
+            border-color: var(--paraguay-blue);
+            background: rgba(0,56,168,0.05);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
         .option.selected {
-            border-color: var(--primary);
-            background-color: rgba(78,115,223,0.08);
+            border-color: var(--paraguay-blue);
+            background: rgba(0,56,168,0.1);
+            transform: scale(1.05);
         }
 
         .option.correct {
             border-color: var(--success);
-            background-color: rgba(28,200,138,0.12);
-            color: #0f7f57;
+            background: rgba(28,200,138,0.1);
+            animation: pulse 0.6s ease-in-out;
         }
 
         .option.incorrect {
             border-color: var(--danger);
-            background-color: rgba(231,74,59,0.12);
-            color: #b3261f;
+            background: rgba(231,74,59,0.1);
+            animation: shake 0.6s ease-in-out;
         }
 
-        .btn,
-        .check-answer {
-            padding: 0.78rem 1.8rem;
-            border-radius: 999px;
-            border: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.02rem;
-            font-family: 'Fredoka', sans-serif;
-            background-color: var(--primary);
-            color: #fff;
-            box-shadow: 0 4px 9px rgba(0,0,0,0.14);
-            transition: all 0.22s ease;
-        }
-
-        .btn:hover,
-        .check-answer:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(0,0,0,0.16);
-            background-color: #3757c4;
-        }
-
-        .btn-secondary {
-            background-color: var(--secondary);
-        }
-
-        .btn-secondary:hover {
-            background-color: #17a673;
-        }
-
-        .buttons-container {
+        .drag-container {
             display: flex;
-            gap: 0.8rem;
-            justify-content: center;
             flex-wrap: wrap;
-            margin-top: 0.4rem;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            padding: 1.5rem;
+            background: rgba(0,56,168,0.05);
+            border-radius: 15px;
         }
 
-        .check-answer {
-            background-color: var(--secondary);
-            margin-top: 0.4rem;
+        .draggable {
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--info), #2e9cca);
+            color: white;
+            border-radius: 12px;
+            cursor: grab;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 10;
+            touch-action: none;
         }
 
-        .check-answer:disabled {
-            opacity: 0.6;
-            cursor: default;
-            transform: none;
-            box-shadow: none;
+        .draggable:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+            z-index: 1000;
+            transform: scale(1.1);
+        }
+
+        .draggable.returning {
+            animation: bounce 0.8s ease-in-out;
+        }
+
+        .drop-zone {
+            min-height: 60px;
+            border: 3px dashed #ccc;
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .drop-zone.drag-over {
+            border-color: var(--paraguay-blue);
+            background: rgba(0,56,168,0.1);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,56,168,0.3);
+        }
+
+        .drop-zone.correct {
+            border-color: var(--success);
+            background: rgba(28,200,138,0.1);
+            animation: pulse 0.6s ease-in-out;
+        }
+
+        .drop-zone.incorrect {
+            border-color: var(--danger);
+            background: rgba(231,74,59,0.1);
+            animation: shake 0.6s ease-in-out;
+        }
+
+        .map-container {
+            position: relative;
+            margin: 2rem auto;
+            max-width: 100%;
+            background: linear-gradient(135deg, rgba(240,248,255,0.9), rgba(255,255,255,0.9));
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .map-svg {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+        }
+
+        .department {
+            fill: #e9ecef;
+            stroke: #333;
+            stroke-width: 1.5;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .department:hover {
+            fill: rgba(0,56,168,0.3);
+            transform: translateY(-3px);
+            filter: brightness(1.1);
+        }
+
+        .department.highlight {
+            fill: rgba(0,56,168,0.5);
+            stroke: var(--paraguay-blue);
+            stroke-width: 3;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        .department.correct {
+            fill: rgba(28,200,138,0.5);
+            stroke: var(--success);
+            stroke-width: 3;
+            animation: pulse 0.6s ease-in-out;
+        }
+
+        .department.incorrect {
+            fill: rgba(231,74,59,0.5);
+            stroke: var(--danger);
+            stroke-width: 3;
+            animation: shake 0.6s ease-in-out;
+        }
+
+        .capital-marker {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: radial-gradient(circle, var(--danger), var(--paraguay-red));
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .capital-marker:hover {
+            transform: translate(-50%, -50%) scale(1.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+
+        .capital-label {
+            position: absolute;
+            background: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            white-space: nowrap;
+            transform: translate(-50%, -180%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            border: 2px solid var(--paraguay-blue);
+        }
+
+        .capital-marker:hover + .capital-label {
+            opacity: 1;
         }
 
         .feedback {
-            margin-top: 0.9rem;
-            padding: 0.8rem 1rem;
-            border-radius: 12px;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 2rem;
             display: none;
-            font-size: 0.98rem;
-            animation: fadeIn 0.35s ease-out;
+            animation: slideInUp 0.5s ease-out;
+            font-size: 1.1rem;
+            font-weight: 500;
         }
 
         .feedback.show {
@@ -282,267 +481,70 @@
         }
 
         .feedback.correct {
-            background-color: rgba(28,200,138,0.11);
+            background: linear-gradient(135deg, rgba(28,200,138,0.1), rgba(21,166,124,0.1));
             border-left: 5px solid var(--success);
-            color: #0f7f57;
+            color: var(--success);
         }
 
         .feedback.incorrect {
-            background-color: rgba(231,74,59,0.11);
+            background: linear-gradient(135deg, rgba(231,74,59,0.1), rgba(192,57,43,0.1));
             border-left: 5px solid var(--danger);
-            color: #b3261f;
+            color: var(--danger);
         }
-
-        /* Mapas */
-
-        .map-container {
-            margin: 1.2rem auto 0.4rem;
-            max-width: 850px;
-        }
-
-        .map-wrapper {
-            position: relative;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-            background-color: #eef6ff;
-        }
-
-        .map-wrapper img {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
-
-        .dept-drop {
-            position: absolute;
-            width: 7.5%;
-            height: 7.5%;
-            border-radius: 50%;
-            border: 2px dashed transparent;
-            transform: translate(-50%, -50%);
-            box-sizing: border-box;
-            transition: all 0.18s ease;
-        }
-
-        .dept-drop.drag-over {
-            border-color: var(--primary);
-            background-color: rgba(78,115,223,0.10);
-        }
-
-        .dept-drop.correct-zone {
-            border-color: var(--success);
-            background-color: rgba(28,200,138,0.10);
-        }
-
-        .capital-draggable {
-            display: inline-block;
-            padding: 0.45rem 0.9rem;
-            background-color: var(--warning);
-            color: #fff;
-            border-radius: 18px;
-            cursor: grab;
-            font-size: 0.92rem;
-            box-shadow: 0 3px 7px rgba(0,0,0,0.18);
-            user-select: none;
-            margin: 0.25rem;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .capital-draggable.dragging {
-            opacity: 0.85;
-            cursor: grabbing;
-            transform: scale(1.04);
-            z-index: 40;
-        }
-
-        .capital-draggable.correct {
-            background-color: var(--success);
-            box-shadow: 0 3px 8px rgba(0,0,0,0.18);
-        }
-
-        .capital-draggable.incorrect {
-            background-color: var(--danger);
-            animation: bounce 0.4s ease;
-        }
-
-        @keyframes bounce {
-            0%,100% { transform: translateY(0); }
-            40% { transform: translateY(-8px); }
-            70% { transform: translateY(-3px); }
-        }
-
-        /* Reloj */
-
-        .clock-container {
-            display: flex;
-            justify-content: center;
-            margin: 1rem 0 0.6rem;
-        }
-
-        .clock {
-            width: 190px;
-            height: 190px;
-            border-radius: 50%;
-            border: 8px solid var(--primary);
-            position: relative;
-            background-color: #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-        }
-
-        .clock-center {
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            background-color: var(--primary);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 8;
-        }
-
-        .hour-hand,
-        .minute-hand {
-            position: absolute;
-            left: 50%;
-            bottom: 50%;
-            transform-origin: bottom center;
-            background-color: var(--dark);
-            border-radius: 5px;
-        }
-
-        .hour-hand {
-            width: 6px;
-            height: 55px;
-            margin-left: -3px;
-        }
-
-        .minute-hand {
-            width: 4px;
-            height: 78px;
-            margin-left: -2px;
-        }
-
-        .clock-number {
-            position: absolute;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .number-12 { top: 10px; left: 50%; transform: translateX(-50%); }
-        .number-3 { right: 10px; top: 50%; transform: translateY(-50%); }
-        .number-6 { bottom: 9px; left: 50%; transform: translateX(-50%); }
-        .number-9 { left: 10px; top: 50%; transform: translateY(-50%); }
-
-        /* Memoria */
-
-        .memory-game {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.7rem;
-            margin-top: 0.9rem;
-        }
-
-        .memory-card {
-            position: relative;
-            aspect-ratio: 1;
-            border-radius: 12px;
-            cursor: pointer;
-            transform-style: preserve-3d;
-            transition: transform 0.38s ease;
-        }
-
-        .memory-card-face {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            backface-visibility: hidden;
-        }
-
-        .memory-card-back {
-            background-color: var(--primary);
-            color: #fff;
-            font-size: 1.6rem;
-        }
-
-        .memory-card-front {
-            background-color: #fff;
-            border: 2px solid var(--primary);
-            font-size: 0.95rem;
-            padding: 0.3rem;
-            text-align: center;
-            transform: rotateY(180deg);
-        }
-
-        .memory-card.flipped {
-            transform: rotateY(180deg);
-        }
-
-        .memory-card.matched .memory-card-front {
-            background-color: var(--success);
-            color: #fff;
-            border-color: var(--success);
-        }
-
-        .memory-card.matched {
-            cursor: default;
-        }
-
-        /* Resultados */
 
         .result-screen {
             text-align: center;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(240,248,255,0.95));
         }
 
         .result-screen h2 {
-            color: var(--primary);
-            font-size: 2.15rem;
-            margin-bottom: 1rem;
+            color: var(--paraguay-blue);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .result-score {
-            font-size: 2.6rem;
-            font-weight: 700;
-            color: var(--warning);
-            margin-bottom: 0.4rem;
+            font-size: 3.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--paraguay-blue), var(--paraguay-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 2rem 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
         .result-message {
-            font-size: 1.05rem;
-            margin-bottom: 1.4rem;
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            color: #555;
         }
 
         .result-details {
-            background-color: var(--light);
-            border-radius: 14px;
-            padding: 1.2rem 1rem;
+            background: linear-gradient(135deg, rgba(248,249,252,0.9), rgba(240,248,255,0.9));
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
             text-align: left;
-            max-height: 260px;
-            overflow-y: auto;
-            font-size: 0.92rem;
         }
 
         .result-details h3 {
-            color: var(--primary);
-            margin-bottom: 0.6rem;
-            font-size: 1.2rem;
+            color: var(--paraguay-blue);
+            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
         }
 
         .result-details ul {
-            list-style: none;
+            list-style-type: none;
+            padding-left: 0;
         }
 
         .result-details li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e9ecef;
             display: flex;
             justify-content: space-between;
-            gap: 0.5rem;
-            padding: 0.35rem 0.2rem;
-            border-bottom: 1px solid #e3e6f0;
+            align-items: center;
         }
 
         .result-details li:last-child {
@@ -551,1334 +553,2221 @@
 
         .result-details .correct {
             color: var(--success);
+            font-weight: 600;
         }
 
         .result-details .incorrect {
             color: var(--danger);
+            font-weight: 600;
         }
 
-        footer.footer {
-            background-color: var(--dark);
-            color: #fff;
-            padding: 0.9rem;
-            text-align: center;
-            font-size: 0.9rem;
+        .buttons-container {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .hidden {
             display: none !important;
         }
 
+        .timer {
+            font-size: 1.3rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .timer i {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--paraguay-blue), var(--paraguay-red));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            transform-style: preserve-3d;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .memory-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            background: linear-gradient(135deg, var(--success), #15a67c);
+            pointer-events: none;
+            animation: pulse 0.6s ease-in-out;
+        }
+
+        .memory-card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            border-radius: 15px;
+        }
+
+        .memory-card-back {
+            background: linear-gradient(135deg, var(--paraguay-blue), var(--paraguay-red));
+            color: white;
+            font-size: 2.5rem;
+        }
+
+        .memory-card-front {
+            background: white;
+            transform: rotateY(180deg);
+            font-size: 1.3rem;
+            font-weight: 600;
+            border: 3px solid var(--paraguay-blue);
+            color: var(--dark);
+        }
+
         .confetti {
             position: fixed;
-            width: 9px;
-            height: 9px;
-            background-color: var(--warning);
-            top: -10px;
-            z-index: 999;
-            animation: confetti-fall 4s linear forwards;
+            width: 15px;
+            height: 15px;
+            z-index: 1000;
+            pointer-events: none;
         }
 
-        @keyframes confetti-fall {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        .hint-button {
+            background: linear-gradient(135deg, var(--accent), #e6b422);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Fredoka', cursive;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+        .hint-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .hint-text {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,249,252,0.95));
+            border: 2px solid var(--accent);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            animation: slideInUp 0.5s ease-out;
+            font-size: 1.1rem;
+            color: #555;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .hint-text.show {
+            display: block;
+        }
+
+        .matching-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .matching-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .matching-item {
+            padding: 1rem;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .matching-item.left {
+            text-align: right;
+            padding-right: 3rem;
+        }
+
+        .matching-item.right {
+            text-align: left;
+            padding-left: 3rem;
+        }
+
+        .matching-line {
+            position: absolute;
+            height: 2px;
+            background: var(--paraguay-blue);
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .matching-line.left {
+            right: 0;
+            width: 2rem;
+        }
+
+        .matching-line.right {
+            left: 0;
+            width: 2rem;
+        }
+
+        .matching-line.middle {
+            left: 2rem;
+            right: 2rem;
+            width: auto;
+        }
+
+        .connect-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .connect-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+        }
+
+        .connect-word {
+            flex: 1;
+            padding: 0.8rem;
+            background: rgba(0,56,168,0.1);
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .connect-word.dragging {
+            opacity: 0.5;
+        }
+
+        .connect-target {
+            width: 100px;
+            height: 50px;
+            border: 2px dashed var(--paraguay-blue);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .connect-target.connected {
+            background: rgba(28,200,138,0.1);
+            border-color: var(--success);
+        }
+
+        .footer {
+            background: linear-gradient(90deg, var(--paraguay-blue), var(--paraguay-red));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 1.1rem;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
         }
 
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.7rem;
+            h1 {
+                font-size: 2rem;
             }
-            .section-screen h2,
-            .welcome-screen h2 {
-                font-size: 1.6rem;
+            
+            .options {
+                grid-template-columns: 1fr;
             }
-            section {
-                padding: 1.6rem 1.1rem;
-            }
+            
             .memory-game {
                 grid-template-columns: repeat(3, 1fr);
             }
+            
             .buttons-container {
                 flex-direction: column;
             }
-            .btn,
-            .check-answer {
+            
+            .btn {
                 width: 100%;
                 justify-content: center;
+            }
+            
+            .welcome-screen, .result-screen, .section-screen, .question-screen {
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-<header>
-    <h1><i class="fas fa-graduation-cap"></i> Evaluación Interactiva de Ciencias Sociales</h1>
-    <p class="subtitle">2.º Grado de la Educación Escolar Básica</p>
-</header>
+    <header>
+        <h1><i class="fas fa-map-marked-alt"></i> Aventura Geográfica del Paraguay</h1>
+        <p class="subtitle">Explora y aprende sobre las maravillas de nuestro país</p>
+    </header>
 
-<main>
-    <!-- Pantalla de bienvenida -->
-    <section id="welcome-screen" class="welcome-screen">
-        <h2><i class="fas fa-smile-beam"></i> Bienvenido a tu evaluación interactiva</h2>
-        <p>Explora los mapas, el tiempo histórico y nuestra historia de forma divertida.</p>
-        <p>Responde con calma, observa bien las imágenes y aprende de cada intento.</p>
-        <div class="buttons-container">
-            <button class="btn" id="start-btn">
-                <i class="fas fa-play"></i> Comenzar evaluación
-            </button>
-        </div>
-    </section>
-
-    <!-- Pantalla por sección -->
-    <section id="section-screen" class="section-screen hidden">
-        <h2 id="section-title"></h2>
-        <p id="section-description" class="section-description"></p>
-        <div class="progress-container">
-            <div class="progress-bar" id="section-progress">0%</div>
-        </div>
-        <div class="buttons-container">
-            <button class="btn" id="start-section-btn">
-                <i class="fas fa-arrow-right"></i> Comenzar sección
-            </button>
-        </div>
-    </section>
-
-    <!-- Pantalla de preguntas -->
-    <section id="question-screen" class="question-screen hidden">
-        <div class="score-display">
-            <div class="score-item">
-                <i class="fas fa-star"></i>
-                <span>Puntuación: <span id="current-score">0</span></span>
+    <main>
+        <!-- Welcome Screen -->
+        <section id="welcome-screen" class="welcome-screen">
+            <h2><i class="fas fa-compass"></i> ¡Bienvenido a tu aventura geográfica!</h2>
+            <p>¡Hola! Estás a punto de embarcarte en un emocionante viaje por el Paraguay.</p>
+            <p>Arrastra, selecciona y descubre todo sobre nuestros departamentos, capitales y región. ¡No te preocupes si cometes errores, podrás intentarlo de nuevo hasta que te conviertas en un experto!</p>
+            <div class="buttons-container">
+                <button class="btn" id="start-btn">
+                    <i class="fas fa-play"></i> Comenzar Aventura
+                </button>
             </div>
-            <div class="timer">
-                <i class="fas fa-clock"></i>
-                <span id="timer">00:00</span>
+        </section>
+
+        <!-- Section Screen -->
+        <section id="section-screen" class="section-screen hidden">
+            <h2 id="section-title"></h2>
+            <p id="section-description" class="section-description"></p>
+            <div class="progress-container">
+                <div class="progress-bar" id="section-progress">0%</div>
             </div>
-        </div>
+            <div class="buttons-container">
+                <button class="btn" id="start-section-btn">
+                    <i class="fas fa-arrow-right"></i> Comenzar Reto
+                </button>
+            </div>
+        </section>
 
-        <div class="progress-container">
-            <div class="progress-bar" id="question-progress">0%</div>
-        </div>
-
-        <div id="question-container" class="question-container"></div>
-        <div id="feedback" class="feedback"></div>
-
-        <div class="buttons-container">
-            <button class="btn hidden" id="next-question-btn">
-                <i class="fas fa-arrow-right"></i> Siguiente pregunta
+        <!-- Question Screen -->
+        <section id="question-screen" class="question-screen hidden">
+            <div class="score-display">
+                <div class="score-item">
+                    <i class="fas fa-star"></i>
+                    <span>Puntuación: <span id="current-score">0</span></span>
+                </div>
+                <div class="timer">
+                    <i class="fas fa-clock"></i>
+                    <span id="timer">00:00</span>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="question-progress">0%</div>
+            </div>
+            <button class="hint-button" id="hint-btn">
+                <i class="fas fa-lightbulb"></i> Necesito una pista
             </button>
-            <button class="btn hidden" id="finish-section-btn">
-                <i class="fas fa-check-circle"></i> Finalizar sección
-            </button>
-        </div>
-    </section>
+            <div class="hint-text" id="hint-text"></div>
+            <div id="question-container" class="question-container">
+                <!-- Questions will be dynamically loaded here -->
+            </div>
+            <div id="feedback" class="feedback"></div>
+            <div class="buttons-container">
+                <button class="btn hidden" id="next-question-btn">
+                    <i class="fas fa-arrow-right"></i> Siguiente Pregunta
+                </button>
+                <button class="btn hidden" id="finish-section-btn">
+                    <i class="fas fa-check-circle"></i> Finalizar Reto
+                </button>
+            </div>
+        </section>
 
-    <!-- Pantalla de resultados -->
-    <section id="result-screen" class="result-screen hidden">
-        <h2><i class="fas fa-trophy"></i> Evaluación completada</h2>
-        <div class="result-score" id="final-score">0%</div>
-        <p class="result-message" id="result-message"></p>
-        <div class="result-details">
-            <h3>Resumen de respuestas</h3>
-            <ul id="result-details-list"></ul>
-        </div>
-        <div class="buttons-container">
-            <button class="btn btn-secondary" id="retry-btn">
-                <i class="fas fa-redo"></i> Intentar nuevamente
-            </button>
-            <button class="btn" id="home-btn">
-                <i class="fas fa-home"></i> Volver al inicio
-            </button>
-        </div>
-    </section>
-</main>
+        <!-- Result Screen -->
+        <section id="result-screen" class="result-screen hidden">
+            <h2><i class="fas fa-trophy"></i> ¡Has completado la aventura!</h2>
+            <div class="result-score" id="final-score">0%</div>
+            <p class="result-message" id="result-message"></p>
+            <div class="result-details">
+                <h3>Resumen de tu viaje</h3>
+                <ul id="result-details-list">
+                    <!-- Result details will be dynamically loaded here -->
+                </ul>
+            </div>
+            <div class="buttons-container">
+                <button class="btn btn-secondary" id="retry-btn">
+                    <i class="fas fa-redo"></i> Intentar de Nuevo
+                </button>
+                <button class="btn" id="home-btn">
+                    <i class="fas fa-home"></i> Página Principal
+                </button>
+            </div>
+        </section>
+    </main>
 
-<footer class="footer">
-    <p>&copy; 2025 Evaluación Interactiva de Ciencias Sociales - 2.º Grado</p>
-</footer>
+    <footer class="footer">
+        <p>&copy; 2023 Aventura Geográfica del Paraguay - 2º Grado</p>
+    </footer>
 
-<script>
-    // =========================
-    // Configuración de secciones
-    // =========================
+    <script>
+        // Game state
+        let currentSection = 0;
+        let currentQuestion = 0;
+        let score = 0;
+        let answers = [];
+        let startTime = null;
+        let timerInterval = null;
+        let draggedElement = null;
+        let originalParent = null;
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let selectedCheckboxes = [];
+        let hintsUsed = 0;
 
-    const MAP_IMAGE_URL =
-        "https://static.vecteezy.com/system/resources/previews/046/025/202/large_2x/illustrated-map-of-paraguay-with-departments-capital-district-and-administrative-divisions-and-neighbouring-countries-editable-and-clearly-labeled-layers-vector.jpg";
-
-    let currentSection = 0;
-    let currentQuestion = 0;
-    let score = 0;
-    let answers = [];
-    let startTime = null;
-    let timerInterval = null;
-
-    let draggedElement = null;
-    let selectedCheckboxes = [];
-    let originalPositions = {};
-    let memoryCards = [];
-    let flippedCards = [];
-    let matchedPairs = 0;
-
-    const sections = [
-        {
-            title: "A. Departamentos del Paraguay y sus capitales",
-            description: "Identifica cuántos departamentos tiene Paraguay y relaciona capitales con algunos departamentos.",
-            questions: [
-                {
-                    type: "multiple-choice",
-                    question: "¿Cuántos departamentos tiene Paraguay?",
-                    options: ["16", "17", "18"],
-                    answer: 1,
-                    feedback: {
-                        correct: "Correcto. Paraguay tiene 17 departamentos.",
-                        incorrect: "Revisa tu respuesta. Paraguay tiene 17 departamentos."
-                    }
-                },
-                {
-                    type: "multiple-choice",
-                    question: "La capital del Paraguay es:",
-                    options: ["Asunción", "Concepción", "Ciudad del Este"],
-                    answer: 0,
-                    feedback: {
-                        correct: "Correcto. La capital del Paraguay es Asunción.",
-                        incorrect: "Observa bien. La capital del Paraguay es Asunción."
-                    }
-                },
-                {
-                    type: "true-false",
-                    question: "Cada departamento tiene una capital.",
-                    answer: true,
-                    feedback: {
-                        correct: "Correcto. Cada departamento tiene su capital departamental.",
-                        incorrect: "No es correcto. Cada departamento tiene su capital departamental."
-                    }
-                },
-                {
-                    type: "map-capital-drag",
-                    question: "Arrastra cada capital hacia su departamento correspondiente en el mapa.",
-                    items: [
-                        { id: "c_asu", text: "Asunción", correctDept: "central" },
-                        { id: "c_cde", text: "Ciudad del Este", correctDept: "alto-parana" },
-                        { id: "c_enc", text: "Encarnación", correctDept: "itapua" },
-                        { id: "c_sjb", text: "San Juan Bautista", correctDept: "misiones" },
-                        { id: "c_sg",  text: "Salto del Guairá", correctDept: "canindeyu" },
-                        { id: "c_fo",  text: "Fuerte Olimpo", correctDept: "alto-paraguay" }
-                    ],
-                    feedback: {
-                        correct: "Muy bien. Todas las capitales están en el departamento correcto.",
-                        incorrect: "Hay capitales fuera de lugar. Ajusta hasta que todas coincidan."
-                    }
-                }
+        // Map data for Paraguay departments and their coordinates
+        const paraguayMap = {
+            departments: [
+                { id: "alto-paraguay", name: "Alto Paraguay", capital: "Fuerte Olimpo", x: 40, y: 20 },
+                { id: "alto-parana", name: "Alto Paraná", capital: "Ciudad del Este", x: 80, y: 60 },
+                { id: "amambay", name: "Amambay", capital: "Pedro Juan Caballero", x: 75, y: 25 },
+                { id: "boqueron", name: "Boquerón", capital: "Filadelfia", x: 20, y: 40 },
+                { id: "caaguazu", name: "Caaguazú", capital: "Coronel Oviedo", x: 65, y: 55 },
+                { id: "caazapa", name: "Caazapá", capital: "Caazapá", x: 70, y: 70 },
+                { id: "canindeyu", name: "Canindeyú", capital: "Salto del Guairá", x: 85, y: 35 },
+                { id: "central", name: "Central", capital: "Areguá", x: 60, y: 65 },
+                { id: "concepcion", name: "Concepción", capital: "Concepción", x: 55, y: 25 },
+                { id: "cordillera", name: "Cordillera", capital: "Caacupé", x: 60, y: 55 },
+                { id: "guaira", name: "Guairá", capital: "Villarrica", x: 75, y: 65 },
+                { id: "itapua", name: "Itapúa", capital: "Encarnación", x: 75, y: 85 },
+                { id: "misiones", name: "Misiones", capital: "San Juan Bautista", x: 65, y: 80 },
+                { id: "nneembucu", name: "Ñeembucú", capital: "Pilar", x: 55, y: 85 },
+                { id: "paraguari", name: "Paraguarí", capital: "Paraguarí", x: 60, y: 75 },
+                { id: "presidente-hayes", name: "Presidente Hayes", capital: "Villa Hayes", x: 35, y: 45 },
+                { id: "san-pedro", name: "San Pedro", capital: "San Pedro", x: 65, y: 40 }
             ]
-        },
-        {
-            title: "B. Regiones y mapa físico del Paraguay",
-            description: "Reconoce la Región Oriental, la Región Occidental y elementos de un mapa físico.",
-            questions: [
-                {
-                    type: "multiple-choice",
-                    question: "¿Cuántas regiones principales tiene Paraguay?",
-                    options: ["1", "2", "3"],
-                    answer: 1,
-                    feedback: {
-                        correct: "Correcto. Paraguay tiene 2 regiones: Oriental y Occidental.",
-                        incorrect: "Paraguay se organiza en 2 regiones principales."
+        };
+
+        // Sections data
+        const sections = [
+            {
+                title: "A. Los departamentos del Paraguay y sus capitales",
+                description: "En esta sección pondrás a prueba tus conocimientos sobre los departamentos de Paraguay y sus capitales. ¡Arrastra y suelta para responder!",
+                questions: [
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuántos departamentos tiene el Paraguay?",
+                        options: ["14", "17", "20", "15"],
+                        answer: 1,
+                        hint: "Piensa en un número impar entre 15 y 19",
+                        feedback: {
+                            correct: "¡Correcto! El Paraguay se divide en 17 departamentos.",
+                            incorrect: "No es correcto. El Paraguay se divide en 17 departamentos."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuál es la capital del Paraguay?",
+                        options: ["Ciudad del Este", "Concepción", "Asunción", "Encarnación"],
+                        answer: 2,
+                        hint: "Es la ciudad más antigua y fue fundada en 1537",
+                        feedback: {
+                            correct: "¡Correcto! La capital del Paraguay es Asunción.",
+                            incorrect: "No es correcto. La capital del Paraguay es Asunción."
+                        }
+                    },
+                    {
+                        type: "map-departments",
+                        question: "Selecciona el departamento de Alto Paraná en el mapa:",
+                        answer: "alto-parana",
+                        hint: "Busca el departamento que está en el este del país, cerca de la frontera con Brasil",
+                        feedback: {
+                            correct: "¡Excelente! Has seleccionado correctamente el departamento de Alto Paraná.",
+                            incorrect: "No es correcto. Alto Paraná está en el este del país, cerca de la frontera con Brasil."
+                        }
+                    },
+                    {
+                        type: "drag-capital-to-department",
+                        question: "Arrastra cada capital a su departamento correspondiente:",
+                        items: [
+                            { id: "capital1", text: "Ciudad del Este" },
+                            { id: "capital2", text: "Areguá" },
+                            { id: "capital3", text: "Encarnación" },
+                            { id: "capital4", text: "Concepción" }
+                        ],
+                        dropZones: [
+                            { id: "dept1", text: "Alto Paraná", correct: "capital1" },
+                            { id: "dept2", text: "Central", correct: "capital2" },
+                            { id: "dept3", text: "Itapúa", correct: "capital3" },
+                            { id: "dept4", text: "Concepción", correct: "capital4" }
+                        ],
+                        hint: "Piensa en qué región del país se encuentra cada capital",
+                        feedback: {
+                            correct: "¡Excelente! Has relacionado correctamente las capitales con sus departamentos.",
+                            incorrect: "No es correcto. Revisa las correspondencias entre capitales y departamentos."
+                        }
+                    },
+                    {
+                        type: "true-false",
+                        question: "¿Cada departamento tiene su propia capital?",
+                        answer: true,
+                        hint: "Piensa en cómo está organizado el país administrativamente",
+                        feedback: {
+                            correct: "¡Correcto! Cada departamento tiene su propia capital.",
+                            incorrect: "No es correcto. Cada departamento tiene su propia capital."
+                        }
+                    },
+                    {
+                        type: "matching-activity",
+                        question: "Une cada departamento con su capital usando las flechas:",
+                        pairs: [
+                            { left: "Alto Paraná", right: "Ciudad del Este" },
+                            { left: "Central", right: "Areguá" },
+                            { left: "Itapúa", right: "Encarnación" },
+                            { left: "Concepción", right: "Concepción" }
+                        ],
+                        hint: "Piensa en qué región del país se encuentra cada capital",
+                        feedback: {
+                            correct: "¡Excelente! Has unido correctamente los departamentos con sus capitales.",
+                            incorrect: "No es correcto. Revisa las correspondencias entre departamentos y capitales."
+                        }
                     }
-                },
-                {
-                    type: "multiple-choice",
-                    question: "¿Qué río divide al país en dos regiones?",
-                    options: ["Río Monday", "Río Paraguay", "Río Tebicuary"],
-                    answer: 1,
-                    feedback: {
-                        correct: "Correcto. El río Paraguay divide el país en dos regiones.",
-                        incorrect: "Observa el mapa. El río Paraguay es el que divide el país."
+                ]
+            },
+            {
+                title: "B. Regiones y mapa físico del Paraguay",
+                description: "En esta sección explorarás las regiones y el mapa físico de Paraguay. ¡Prepárate para un viaje geográfico interactivo!",
+                questions: [
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuáles son las dos grandes regiones del Paraguay?",
+                        options: [
+                            "Norte y Sur",
+                            "Este y Oeste",
+                            "Oriental y Occidental",
+                            "Alta y Baja"
+                        ],
+                        answer: 2,
+                        hint: "Una región se llama también Chaco",
+                        feedback: {
+                            correct: "¡Correcto! Las dos grandes regiones del Paraguay son la Región Oriental y la Región Occidental.",
+                            incorrect: "No es correcto. Las dos grandes regiones del Paraguay son la Región Oriental y la Región Occidental."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿Qué río divide al Paraguay en dos regiones?",
+                        options: ["Río Paraná", "Río Paraguay", "Río Pilcomayo", "Río Monday"],
+                        answer: 1,
+                        hint: "Es el río más importante que atraviesa el país de norte a sur",
+                        feedback: {
+                            correct: "¡Correcto! El Río Paraguay divide al país en dos regiones.",
+                            incorrect: "No es correcto. El Río Paraguay divide al país en dos regiones."
+                        }
+                    },
+                    {
+                        type: "checkbox",
+                        question: "Selecciona los elementos que pertenecen a un mapa físico:",
+                        options: ["Ríos", "Cordilleras", "Rutas", "Montes o cerros", "Hospitales", "Lagos o lagunas"],
+                        answer: [0, 1, 3, 5],
+                        hint: "Piensa en elementos naturales del terreno, no en construcciones humanas",
+                        feedback: {
+                            correct: "¡Correcto! Los elementos que pertenecen a un mapa físico son: Ríos, Cordilleras, Montes o cerros y Lagos o lagunas.",
+                            incorrect: "No es correcto. Los elementos que pertenecen a un mapa físico son: Ríos, Cordilleras, Montes o cerros y Lagos o lagunas."
+                        }
+                    },
+                    {
+                        type: "map-regions",
+                        question: "Selecciona la Región Oriental en el mapa:",
+                        answer: "oriental",
+                        hint: "Es la región más poblada y donde se encuentra Asunción",
+                        feedback: {
+                            correct: "¡Excelente! Has seleccionado correctamente la Región Oriental.",
+                            incorrect: "No es correcto. La Región Oriental es la región este del país, donde se encuentra Asunción."
+                        }
+                    },
+                    {
+                        type: "drag-regions",
+                        question: "Arrastra los nombres de las regiones a su lugar correcto en el mapa:",
+                        items: [
+                            { id: "reg1", text: "Región Oriental" },
+                            { id: "reg2", text: "Región Occidental" }
+                        ],
+                        dropZones: [
+                            { id: "map-east", correct: "reg1", x: "65%", y: "50%" },
+                            { id: "map-west", correct: "reg2", x: "35%", y: "50%" }
+                        ],
+                        hint: "La Región Oriental está al este del río Paraguay y la Occidental al oeste",
+                        feedback: {
+                            correct: "¡Excelente! Has ubicado correctamente las regiones en el mapa.",
+                            incorrect: "No es correcto. Revisa la ubicación de las regiones en el mapa."
+                        }
                     }
-                },
-                {
-                    type: "checkbox",
-                    question: "Selecciona los elementos que aparecen en un mapa físico.",
-                    options: ["Ríos", "Cordilleras", "Rutas", "Montes o cerros", "Hospitales", "Lagos o lagunas"],
-                    answer: [0, 1, 3, 5],
-                    feedback: {
-                        correct: "Correcto. Ríos, cordilleras, montes y lagos son elementos físicos.",
-                        incorrect: "Recuerda: ríos, cordilleras, montes y lagos pertenecen al mapa físico."
+                ]
+            },
+            {
+                title: "C. Medición del tiempo",
+                description: "En esta sección aprenderás sobre la medición del tiempo. ¡Prepárate para responder preguntas sobre relojes, calendarios y más!",
+                questions: [
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuántos días tiene una semana?",
+                        options: ["5", "6", "7", "8"],
+                        answer: 2,
+                        hint: "Piensa en cuántos días hay entre lunes y domingo",
+                        feedback: {
+                            correct: "¡Correcto! Una semana tiene 7 días.",
+                            incorrect: "No es correcto. Una semana tiene 7 días."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuántos meses tiene un año?",
+                        options: ["10", "11", "12", "13"],
+                        answer: 2,
+                        hint: "Piensa en cuántos meses hay entre enero y diciembre",
+                        feedback: {
+                            correct: "¡Correcto! Un año tiene 12 meses.",
+                            incorrect: "No es correcto. Un año tiene 12 meses."
+                        }
+                    },
+                    {
+                        type: "checkbox",
+                        question: "Selecciona los objetos que sirven para medir el tiempo:",
+                        options: ["reloj digital", "piedra", "calendario", "martillo", "reloj de pared"],
+                        answer: [0, 2, 4],
+                        hint: "Piensa en objetos que nos dicen la hora o la fecha",
+                        feedback: {
+                            correct: "¡Correcto! Los objetos que sirven para medir el tiempo son: reloj digital, calendario y reloj de pared.",
+                            incorrect: "No es correcto. Los objetos que sirven para medir el tiempo son: reloj digital, calendario y reloj de pared."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuántos años tiene un lustro?",
+                        options: ["3", "5", "7", "10"],
+                        answer: 1,
+                        hint: "Es menos que una década",
+                        feedback: {
+                            correct: "¡Correcto! Un lustro tiene 5 años.",
+                            incorrect: "No es correcto. Un lustro tiene 5 años."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuántos años tiene una década?",
+                        options: ["5", "10", "20", "50"],
+                        answer: 1,
+                        hint: "Es el doble que un lustro",
+                        feedback: {
+                            correct: "¡Correcto! Una década tiene 10 años.",
+                            incorrect: "No es correcto. Una década tiene 10 años."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuántos años tiene un siglo?",
+                        options: ["10", "50", "100", "1000"],
+                        answer: 2,
+                        hint: "Son 10 décadas",
+                        feedback: {
+                            correct: "¡Correcto! Un siglo tiene 100 años.",
+                            incorrect: "No es correcto. Un siglo tiene 100 años."
+                        }
                     }
-                },
-                {
-                    type: "multiple-choice",
-                    question: "La Región Oriental se encuentra:",
-                    options: [
-                        "A la derecha del río Paraguay en el mapa.",
-                        "A la izquierda del río Paraguay en el mapa."
-                    ],
-                    answer: 0,
-                    feedback: {
-                        correct: "Correcto. La Región Oriental se ubica a la derecha del río Paraguay.",
-                        incorrect: "La Región Oriental se ubica a la derecha del río Paraguay."
+                ]
+            },
+            {
+                title: "D. Nuestra historia, pueblos originarios y españoles",
+                description: "En esta sección explorarás la historia de Paraguay, sus pueblos originarios y la llegada de los españoles. ¡Viaja en el tiempo y descubre nuestro pasado!",
+                questions: [
+                    {
+                        type: "multiple-choice",
+                        question: "¿Con qué cazaban los pueblos originarios?",
+                        options: ["Olla de barro", "Arco y flechas", "Barco", "Teléfono"],
+                        answer: 1,
+                        hint: "Piensa en un objeto que sirve para cazar animales",
+                        feedback: {
+                            correct: "¡Correcto! Los pueblos originarios cazaban con arco y flechas.",
+                            incorrect: "No es correcto. Los pueblos originarios cazaban con arco y flechas."
+                        }
+                    },
+                    {
+                        type: "true-false",
+                        question: "¿Los guaraní vivían al este del río Paraguay?",
+                        answer: true,
+                        hint: "Piensa en dónde se encuentra la mayor parte de la población actual",
+                        feedback: {
+                            correct: "¡Correcto! Los guaraní vivían al este del río Paraguay.",
+                            incorrect: "No es correcto. Los guaraní vivían al este del río Paraguay."
+                        }
+                    },
+                    {
+                        type: "true-false",
+                        question: "¿Los guaraní eran un pueblo nómada?",
+                        answer: false,
+                        hint: "Los nómadas se mueven constantemente, los sedentarios se establecen en un lugar",
+                        feedback: {
+                            correct: "¡Correcto! Los guaraní eran un pueblo sedentario, no nómada.",
+                            incorrect: "No es correcto. Los guaraní eran un pueblo sedentario, no nómada."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿En qué año llegaron los españoles a América?",
+                        options: ["1492", "1592", "1692", "1792"],
+                        answer: 0,
+                        hint: "Fue en el siglo XV, con Cristóbal Colón",
+                        feedback: {
+                            correct: "¡Correcto! Los españoles llegaron a América en 1492.",
+                            incorrect: "No es correcto. Los españoles llegaron a América en 1492."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cuál de estos animales trajeron los españoles?",
+                        options: ["Jaguar", "Tucán", "Vaca", "Yacaré"],
+                        answer: 2,
+                        hint: "Piensa en un animal doméstico que no es originario de América",
+                        feedback: {
+                            correct: "¡Correcto! Los españoles trajeron la vaca.",
+                            incorrect: "No es correcto. Los españoles trajeron la vaca."
+                        }
                     }
-                },
-                {
-                    type: "map-region-drag",
-                    question: "Arrastra el nombre de cada región hacia su lado correcto del mapa.",
-                    items: [
-                        { id: "reg_oriental", text: "Región Oriental", correctRegion: "east" },
-                        { id: "reg_occidental", text: "Región Occidental", correctRegion: "west" }
-                    ],
-                    feedback: {
-                        correct: "Muy bien. Ubicaste correctamente las dos regiones.",
-                        incorrect: "Corrige las ubicaciones de las regiones."
+                ]
+            },
+            {
+                title: "E. Integración y comprensión",
+                description: "En esta sección pondrás a prueba todo lo que has aprendido. ¡Demuestra tus conocimientos sobre la geografía, historia y cultura de Paraguay!",
+                questions: [
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cómo se llamaban los pueblos originarios que vivían al este del río Paraguay?",
+                        options: ["guaraní", "españoles", "portugueses", "ingleses"],
+                        answer: 0,
+                        hint: "Es el nombre del idioma que se habla mucho en Paraguay junto con el español",
+                        feedback: {
+                            correct: "¡Correcto! Los pueblos originarios que vivían al este del río Paraguay se llaman guaraní.",
+                            incorrect: "No es correcto. Los pueblos originarios que vivían al este del río Paraguay se llaman guaraní."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿Cómo se llaman los pueblos que se movían de un lugar a otro en busca de alimentos?",
+                        options: ["sedentarios", "nómadas", "urbanos", "rurales"],
+                        answer: 1,
+                        hint: "La palabra viene de 'nómade', que significa 'que anda'",
+                        feedback: {
+                            correct: "¡Correcto! Los pueblos que se movían de un lugar a otro en busca de alimentos se llaman nómadas.",
+                            incorrect: "No es correcto. Los pueblos que se movían de un lugar a otro en busca de alimentos se llaman nómadas."
+                        }
+                    },
+                    {
+                        type: "multiple-choice",
+                        question: "¿Qué lengua es un aporte importante de los pueblos originarios?",
+                        options: ["inglés", "francés", "guaraní", "alemán"],
+                        answer: 2,
+                        hint: "Es uno de los dos idiomas oficiales de Paraguay",
+                        feedback: {
+                            correct: "¡Correcto! La lengua guaraní es un aporte importante de los pueblos originarios.",
+                            incorrect: "No es correcto. La lengua guaraní es un aporte importante de los pueblos originarios."
+                        }
+                    },
+                    {
+                        type: "true-false",
+                        question: "¿La mezcla de culturas formó la sociedad paraguaya actual?",
+                        answer: true,
+                        hint: "Piensa en la influencia tanto de los pueblos originarios como de los españoles",
+                        feedback: {
+                            correct: "¡Correcto! La mezcla de culturas formó la sociedad paraguaya actual.",
+                            incorrect: "No es correcto. La mezcla de culturas formó la sociedad paraguaya actual."
+                        }
+                    },
+                    {
+                        type: "connect-words",
+                        question: "Arrastra las palabras para formar conceptos correctos:",
+                        words: [
+                            { left: "Guaraní", right: "Lengua", id: "connect1" },
+                            { left: "Asunción", right: "Capital", id: "connect2" },
+                            { left: "Río Paraguay", right: "Divide", id: "connect3" }
+                        ],
+                        hint: "Piensa en cómo se relacionan estos conceptos",
+                        feedback: {
+                            correct: "¡Excelente! Has conectado correctamente las palabras.",
+                            incorrect: "No es correcto. Revisa las conexiones entre las palabras."
+                        }
                     }
-                }
-            ]
-        },
-        {
-            title: "C. Medición del tiempo",
-            description: "Relaciona relojes, calendarios y unidades de tiempo.",
-            questions: [
-                {
-                    type: "checkbox",
-                    question: "Selecciona los objetos que sirven para medir el tiempo.",
-                    options: ["Reloj digital", "Piedra", "Calendario", "Martillo", "Reloj de pared"],
-                    answer: [0, 2, 4],
-                    feedback: {
-                        correct: "Correcto. Reloj digital, calendario y reloj de pared miden el tiempo.",
-                        incorrect: "Revisa: relojes y calendario sirven para medir el tiempo."
-                    }
-                },
-                {
-                    type: "multiple-choice",
-                    question: "¿Cuántos años tiene un lustro?",
-                    options: ["5", "10", "15"],
-                    answer: 0,
-                    feedback: {
-                        correct: "Correcto. Un lustro equivale a 5 años.",
-                        incorrect: "Un lustro equivale a 5 años."
-                    }
-                },
-                {
-                    type: "multiple-choice",
-                    question: "¿Cuántos años tiene una década?",
-                    options: ["5", "10", "20"],
-                    answer: 1,
-                    feedback: {
-                        correct: "Correcto. Una década equivale a 10 años.",
-                        incorrect: "Una década equivale a 10 años."
-                    }
-                },
-                {
-                    type: "clock",
-                    question: "Observa el reloj y selecciona la hora correcta.",
-                    hour: 3,
-                    minute: 25,
-                    options: ["2:30", "3:25", "3:30"],
-                    answer: 1,
-                    feedback: {
-                        correct: "Correcto. El reloj marca las 3:25.",
-                        incorrect: "Observa bien las agujas. Indican las 3:25."
-                    }
-                },
-                {
-                    type: "multiple-choice",
-                    question: "¿Cuántos meses tiene un año?",
-                    options: ["10", "12", "14"],
-                    answer: 1,
-                    feedback: {
-                        correct: "Correcto. Un año tiene 12 meses.",
-                        incorrect: "Un año se compone de 12 meses."
-                    }
-                }
-            ]
-        },
-        {
-            title: "D. Nuestra historia, pueblos originarios y españoles",
-            description: "Reconoce características de los pueblos originarios, los españoles y la mezcla de culturas.",
-            questions: [
-                {
-                    type: "multiple-choice",
-                    question: "¿Con qué cazaban los pueblos originarios?",
-                    options: ["Olla de barro", "Arco y flechas", "Barco"],
-                    answer: 1,
-                    feedback: {
-                        correct: "Correcto. Usaban arco y flechas para la caza.",
-                        incorrect: "Los pueblos originarios cazaban con arco y flechas."
-                    }
-                },
-                {
-                    type: "true-false",
-                    question: "Los guaraní vivían al este del río Paraguay.",
-                    answer: true,
-                    feedback: {
-                        correct: "Correcto. Los guaraní habitaban al este del río Paraguay.",
-                        incorrect: "Revisa. Los guaraní vivían al este del río Paraguay."
-                    }
-                },
-                {
-                    type: "true-false",
-                    question: "Los guaraní eran un pueblo nómada.",
-                    answer: false,
-                    feedback: {
-                        correct: "Correcto. Eran principalmente sedentarios.",
-                        incorrect: "No es correcto. Los guaraní eran en general sedentarios."
-                    }
-                },
-                {
-                    type: "multiple-choice",
-                    question: "¿En qué año llegaron los españoles a América?",
-                    options: ["1492", "1500", "1520"],
-                    answer: 0,
-                    feedback: {
-                        correct: "Correcto. Llegaron en 1492.",
-                        incorrect: "La fecha correcta es 1492."
-                    }
-                },
-                {
-                    type: "multiple-choice",
-                    question: "Selecciona un animal doméstico introducido por los españoles:",
-                    options: ["Vaca", "Jaguar", "Tucán"],
-                    answer: 0,
-                    feedback: {
-                        correct: "Correcto. El ganado vacuno fue introducido por los españoles.",
-                        incorrect: "La vaca es el animal doméstico introducido por los españoles."
-                    }
-                }
-            ]
-        },
-        {
-            title: "E. Integración y comprensión",
-            description: "Integra lo aprendido sobre geografía, tiempo histórico y sociedad paraguaya.",
-            questions: [
-                {
-                    type: "multiple-choice",
-                    question: "Los pueblos originarios del este del río Paraguay se llaman:",
-                    options: ["Guaraní", "Españoles"],
-                    answer: 0,
-                    feedback: {
-                        correct: "Correcto. Son los guaraní.",
-                        incorrect: "La respuesta correcta es guaraní."
-                    }
-                },
-                {
-                    type: "multiple-choice",
-                    question: "Los pueblos que se trasladan en busca de alimentos se llaman:",
-                    options: ["Sedentarios", "Nómadas"],
-                    answer: 1,
-                    feedback: {
-                        correct: "Correcto. Son pueblos nómadas.",
-                        incorrect: "Son pueblos nómadas, porque se mueven constantemente."
-                    }
-                },
-                {
-                    type: "multiple-choice",
-                    question: "La lengua __________ es un aporte clave de los pueblos originarios.",
-                    options: ["Español", "Guaraní", "Portugués"],
-                    answer: 1,
-                    feedback: {
-                        correct: "Correcto. El guaraní es un aporte fundamental.",
-                        incorrect: "La respuesta correcta es guaraní."
-                    }
-                },
-                {
-                    type: "true-false",
-                    question: "La mezcla de culturas ayudó a formar la sociedad paraguaya actual.",
-                    answer: true,
-                    feedback: {
-                        correct: "Correcto. La sociedad paraguaya es resultado de esa mezcla.",
-                        incorrect: "Revisa. La sociedad actual surge de la mezcla de culturas."
-                    }
-                },
-                {
-                    type: "memory-game",
-                    question: "Juego de memoria: une cada departamento con su capital.",
-                    pairs: [
-                        { id: 1, front: "Alto Paraná", back: "Ciudad del Este" },
-                        { id: 2, front: "Central", back: "Areguá" },
-                        { id: 3, front: "Itapúa", back: "Encarnación" },
-                        { id: 4, front: "Misiones", back: "San Juan Bautista" }
-                    ],
-                    feedback: {
-                        correct: "Muy bien. Has encontrado todos los pares correctamente.",
-                        incorrect: "Sigue intentando hasta encontrar todos los pares."
-                    }
-                }
-            ]
-        }
-    ];
-
-    // =========================
-    // Referencias DOM
-    // =========================
-
-    const welcomeScreen = document.getElementById("welcome-screen");
-    const sectionScreen = document.getElementById("section-screen");
-    const questionScreen = document.getElementById("question-screen");
-    const resultScreen = document.getElementById("result-screen");
-
-    const startBtn = document.getElementById("start-btn");
-    const startSectionBtn = document.getElementById("start-section-btn");
-    const nextQuestionBtn = document.getElementById("next-question-btn");
-    const finishSectionBtn = document.getElementById("finish-section-btn");
-    const retryBtn = document.getElementById("retry-btn");
-    const homeBtn = document.getElementById("home-btn");
-
-    const sectionTitle = document.getElementById("section-title");
-    const sectionDescription = document.getElementById("section-description");
-    const sectionProgress = document.getElementById("section-progress");
-    const questionProgress = document.getElementById("question-progress");
-    const questionContainer = document.getElementById("question-container");
-    const feedbackBox = document.getElementById("feedback");
-    const currentScoreSpan = document.getElementById("current-score");
-    const timerSpan = document.getElementById("timer");
-    const finalScore = document.getElementById("final-score");
-    const resultMessage = document.getElementById("result-message");
-    const resultDetailsList = document.getElementById("result-details-list");
-
-    // =========================
-    // Listeners principales
-    // =========================
-
-    startBtn.addEventListener("click", startEvaluation);
-    startSectionBtn.addEventListener("click", startSection);
-    nextQuestionBtn.addEventListener("click", nextQuestion);
-    finishSectionBtn.addEventListener("click", finishSection);
-    retryBtn.addEventListener("click", retryEvaluation);
-    homeBtn.addEventListener("click", goToHome);
-
-    // =========================
-    // Lógica principal
-    // =========================
-
-    function startEvaluation() {
-        welcomeScreen.classList.add("hidden");
-        sectionScreen.classList.remove("hidden");
-        currentSection = 0;
-        currentQuestion = 0;
-        score = 0;
-        answers = [];
-        updateSectionHeader();
-    }
-
-    function updateSectionHeader() {
-        const section = sections[currentSection];
-        sectionTitle.textContent = section.title;
-        sectionDescription.textContent = section.description;
-
-        const progress = (currentSection / sections.length) * 100;
-        sectionProgress.style.width = progress.toFixed(0) + "%";
-        sectionProgress.textContent = progress.toFixed(0) + "%";
-    }
-
-    function startSection() {
-        sectionScreen.classList.add("hidden");
-        questionScreen.classList.remove("hidden");
-        currentQuestion = 0;
-        startTimer();
-        showQuestion();
-    }
-
-    function showQuestion() {
-        const section = sections[currentSection];
-        const question = section.questions[currentQuestion];
-
-        const progress = (currentQuestion / section.questions.length) * 100;
-        questionProgress.style.width = progress.toFixed(0) + "%";
-        questionProgress.textContent = progress.toFixed(0) + "%";
-
-        questionContainer.innerHTML = "";
-        feedbackBox.className = "feedback";
-        feedbackBox.textContent = "";
-        nextQuestionBtn.classList.add("hidden");
-        finishSectionBtn.classList.add("hidden");
-        selectedCheckboxes = [];
-        originalPositions = {};
-        draggedElement = null;
-        memoryCards = [];
-        flippedCards = [];
-        matchedPairs = 0;
-
-        switch (question.type) {
-            case "multiple-choice":
-                renderMultipleChoice(question);
-                break;
-            case "true-false":
-                renderTrueFalse(question);
-                break;
-            case "checkbox":
-                renderCheckbox(question);
-                break;
-            case "map-capital-drag":
-                renderMapCapitalDrag(question);
-                break;
-            case "map-region-drag":
-                renderMapRegionDrag(question);
-                break;
-            case "clock":
-                renderClock(question);
-                break;
-            case "memory-game":
-                renderMemoryGame(question);
-                break;
-        }
-    }
-
-    // =========================
-    // Renderizadores de preguntas
-    // =========================
-
-    function renderMultipleChoice(q) {
-        const qDiv = document.createElement("div");
-        qDiv.className = "question";
-        qDiv.textContent = q.question;
-
-        const optsDiv = document.createElement("div");
-        optsDiv.className = "options";
-
-        q.options.forEach((opt, idx) => {
-            const o = document.createElement("div");
-            o.className = "option";
-            o.textContent = opt;
-            o.dataset.index = idx;
-            o.addEventListener("click", () => selectOption(idx, q));
-            optsDiv.appendChild(o);
-        });
-
-        questionContainer.appendChild(qDiv);
-        questionContainer.appendChild(optsDiv);
-    }
-
-    function renderTrueFalse(q) {
-        const qDiv = document.createElement("div");
-        qDiv.className = "question";
-        qDiv.textContent = q.question;
-
-        const optsDiv = document.createElement("div");
-        optsDiv.className = "options";
-
-        const optT = document.createElement("div");
-        optT.className = "option";
-        optT.textContent = "Verdadero";
-        optT.addEventListener("click", () => selectTrueFalse(true, q));
-
-        const optF = document.createElement("div");
-        optF.className = "option";
-        optF.textContent = "Falso";
-        optF.addEventListener("click", () => selectTrueFalse(false, q));
-
-        optsDiv.appendChild(optT);
-        optsDiv.appendChild(optF);
-
-        questionContainer.appendChild(qDiv);
-        questionContainer.appendChild(optsDiv);
-    }
-
-    function renderCheckbox(q) {
-        const qDiv = document.createElement("div");
-        qDiv.className = "question";
-        qDiv.textContent = q.question;
-
-        const optsDiv = document.createElement("div");
-        optsDiv.className = "options";
-
-        q.options.forEach((opt, idx) => {
-            const o = document.createElement("div");
-            o.className = "option";
-            o.textContent = opt;
-            o.dataset.index = idx;
-            o.addEventListener("click", () => toggleCheckbox(idx, o));
-            optsDiv.appendChild(o);
-        });
-
-        const checkBtn = document.createElement("button");
-        checkBtn.className = "check-answer";
-        checkBtn.textContent = "Verificar respuestas";
-        checkBtn.addEventListener("click", () => checkCheckboxAnswer(q, checkBtn));
-
-        questionContainer.appendChild(qDiv);
-        questionContainer.appendChild(optsDiv);
-        questionContainer.appendChild(checkBtn);
-    }
-
-    function renderMapCapitalDrag(q) {
-        const qDiv = document.createElement("div");
-        qDiv.className = "question";
-        qDiv.textContent = q.question;
-
-        const dragContainer = document.createElement("div");
-        dragContainer.className = "drag-container";
-
-        q.items.forEach(item => {
-            const d = document.createElement("div");
-            d.className = "capital-draggable";
-            d.textContent = item.text;
-            d.draggable = true;
-            d.dataset.id = item.id;
-            d.dataset.correctDept = item.correctDept;
-            d.addEventListener("dragstart", dragStartCapital);
-            d.addEventListener("dragend", dragEndCapital);
-            dragContainer.appendChild(d);
-
-            originalPositions[item.id] = { parent: dragContainer };
-        });
-
-        const mapContainer = document.createElement("div");
-        mapContainer.className = "map-container";
-
-        const wrapper = document.createElement("div");
-        wrapper.className = "map-wrapper";
-
-        const img = document.createElement("img");
-        img.src = MAP_IMAGE_URL;
-        img.alt = "Mapa de Paraguay con departamentos";
-
-        wrapper.appendChild(img);
-
-        // Zonas aproximadas (coordenadas relativas en porcentaje)
-        const zones = [
-            { id: "central", top: 66, left: 45 },
-            { id: "alto-parana", top: 66, left: 78 },
-            { id: "itapua", top: 80, left: 72 },
-            { id: "misiones", top: 78, left: 56 },
-            { id: "canindeyu", top: 52, left: 78 },
-            { id: "alto-paraguay", top: 19, left: 55 }
+                ]
+            }
         ];
 
-        zones.forEach(z => {
-            const dz = document.createElement("div");
-            dz.className = "dept-drop";
-            dz.id = z.id;
-            dz.style.top = z.top + "%";
-            dz.style.left = z.left + "%";
-            dz.addEventListener("dragover", dragOverCapital);
-            dz.addEventListener("dragleave", dragLeaveCapital);
-            dz.addEventListener("drop", dropCapital);
-            wrapper.appendChild(dz);
-        });
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const sectionScreen = document.getElementById('section-screen');
+            const questionScreen = document.getElementById('question-screen');
+            const resultScreen = document.getElementById('result-screen');
+            const startBtn = document.getElementById('start-btn');
+            const startSectionBtn = document.getElementById('start-section-btn');
+            const nextQuestionBtn = document.getElementById('next-question-btn');
+            const finishSectionBtn = document.getElementById('finish-section-btn');
+            const retryBtn = document.getElementById('retry-btn');
+            const homeBtn = document.getElementById('home-btn');
+            const questionContainer = document.getElementById('question-container');
+            const feedback = document.getElementById('feedback');
+            const currentScore = document.getElementById('current-score');
+            const timer = document.getElementById('timer');
+            const sectionProgress = document.getElementById('section-progress');
+            const questionProgress = document.getElementById('question-progress');
+            const sectionTitle = document.getElementById('section-title');
+            const sectionDescription = document.getElementById('section-description');
+            const finalScore = document.getElementById('final-score');
+            const resultMessage = document.getElementById('result-message');
+            const resultDetailsList = document.getElementById('result-details-list');
+            const hintBtn = document.getElementById('hint-btn');
+            const hintText = document.getElementById('hint-text');
 
-        mapContainer.appendChild(wrapper);
+            // Event listeners
+            startBtn.addEventListener('click', startEvaluation);
+            startSectionBtn.addEventListener('click', startSection);
+            nextQuestionBtn.addEventListener('click', nextQuestion);
+            finishSectionBtn.addEventListener('click', finishSection);
+            retryBtn.addEventListener('click', retryEvaluation);
+            homeBtn.addEventListener('click', goToHome);
+            hintBtn.addEventListener('click', showHint);
 
-        const checkBtn = document.createElement("button");
-        checkBtn.className = "check-answer";
-        checkBtn.textContent = "Verificar ubicaciones";
-        checkBtn.addEventListener("click", () => checkMapCapitalDragAnswer(q, checkBtn));
-
-        questionContainer.appendChild(qDiv);
-        questionContainer.appendChild(dragContainer);
-        questionContainer.appendChild(mapContainer);
-        questionContainer.appendChild(checkBtn);
-    }
-
-    function renderMapRegionDrag(q) {
-        const qDiv = document.createElement("div");
-        qDiv.className = "question";
-        qDiv.textContent = q.question;
-
-        const dragContainer = document.createElement("div");
-        dragContainer.className = "drag-container";
-
-        q.items.forEach(item => {
-            const d = document.createElement("div");
-            d.className = "capital-draggable";
-            d.textContent = item.text;
-            d.draggable = true;
-            d.dataset.id = item.id;
-            d.dataset.correctRegion = item.correctRegion;
-            d.addEventListener("dragstart", dragStartCapital);
-            d.addEventListener("dragend", dragEndCapital);
-            dragContainer.appendChild(d);
-            originalPositions[item.id] = { parent: dragContainer };
-        });
-
-        const mapContainer = document.createElement("div");
-        mapContainer.className = "map-container";
-
-        const svgNS = "http://www.w3.org/2000/svg";
-        const svg = document.createElementNS(svgNS, "svg");
-        svg.setAttribute("viewBox", "0 0 800 500");
-        svg.setAttribute("style", "width:100%;height:auto;display:block;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,0.12);background:#eef6ff;");
-
-        const west = document.createElementNS(svgNS, "rect");
-        west.setAttribute("x", "40");
-        west.setAttribute("y", "40");
-        west.setAttribute("width", "320");
-        west.setAttribute("height", "420");
-        west.setAttribute("fill", "#ffd8b2");
-        west.setAttribute("id", "west");
-        west.classList.add("department");
-
-        const east = document.createElementNS(svgNS, "rect");
-        east.setAttribute("x", "440");
-        east.setAttribute("y", "40");
-        east.setAttribute("width", "320");
-        east.setAttribute("height", "420");
-        east.setAttribute("fill", "#c3dff9");
-        east.setAttribute("id", "east");
-        east.classList.add("department");
-
-        const river = document.createElementNS(svgNS, "rect");
-        river.setAttribute("x", "380");
-        river.setAttribute("y", "40");
-        river.setAttribute("width", "40");
-        river.setAttribute("height", "420");
-        river.setAttribute("fill", "#4e73df");
-
-        svg.appendChild(west);
-        svg.appendChild(east);
-        svg.appendChild(river);
-
-        mapContainer.appendChild(svg);
-
-        // Eventos de drop en regiones
-        [west, east].forEach(el => {
-            el.addEventListener("dragover", dragOverCapital);
-            el.addEventListener("dragleave", dragLeaveCapital);
-            el.addEventListener("drop", dropCapital);
-        });
-
-        const checkBtn = document.createElement("button");
-        checkBtn.className = "check-answer";
-        checkBtn.textContent = "Verificar regiones";
-        checkBtn.addEventListener("click", () => checkMapRegionDragAnswer(q, checkBtn));
-
-        questionContainer.appendChild(qDiv);
-        questionContainer.appendChild(dragContainer);
-        questionContainer.appendChild(mapContainer);
-        questionContainer.appendChild(checkBtn);
-    }
-
-    function renderClock(q) {
-        const qDiv = document.createElement("div");
-        qDiv.className = "question";
-        qDiv.textContent = q.question;
-
-        const clockContainer = document.createElement("div");
-        clockContainer.className = "clock-container";
-
-        const clock = document.createElement("div");
-        clock.className = "clock";
-
-        const hourHand = document.createElement("div");
-        hourHand.className = "hour-hand";
-        const hourDeg = ((q.hour % 12) + q.minute / 60) * 30;
-        hourHand.style.transform = "rotate(" + hourDeg + "deg)";
-
-        const minuteHand = document.createElement("div");
-        minuteHand.className = "minute-hand";
-        const minDeg = q.minute * 6;
-        minuteHand.style.transform = "rotate(" + minDeg + "deg)";
-
-        const center = document.createElement("div");
-        center.className = "clock-center";
-
-        const n12 = document.createElement("div");
-        n12.className = "clock-number number-12";
-        n12.textContent = "12";
-        const n3 = document.createElement("div");
-        n3.className = "clock-number number-3";
-        n3.textContent = "3";
-        const n6 = document.createElement("div");
-        n6.className = "clock-number number-6";
-        n6.textContent = "6";
-        const n9 = document.createElement("div");
-        n9.className = "clock-number number-9";
-        n9.textContent = "9";
-
-        clock.appendChild(hourHand);
-        clock.appendChild(minuteHand);
-        clock.appendChild(center);
-        clock.appendChild(n12);
-        clock.appendChild(n3);
-        clock.appendChild(n6);
-        clock.appendChild(n9);
-        clockContainer.appendChild(clock);
-
-        const optsDiv = document.createElement("div");
-        optsDiv.className = "options";
-
-        q.options.forEach((opt, idx) => {
-            const o = document.createElement("div");
-            o.className = "option";
-            o.textContent = opt;
-            o.addEventListener("click", () => selectOption(idx, q));
-            optsDiv.appendChild(o);
-        });
-
-        questionContainer.appendChild(qDiv);
-        questionContainer.appendChild(clockContainer);
-        questionContainer.appendChild(optsDiv);
-    }
-
-    function renderMemoryGame(q) {
-        const qDiv = document.createElement("div");
-        qDiv.className = "question";
-        qDiv.textContent = q.question;
-
-        const grid = document.createElement("div");
-        grid.className = "memory-game";
-
-        const cards = [];
-        q.pairs.forEach(p => {
-            cards.push({ id: p.id, text: p.front });
-            cards.push({ id: p.id, text: p.back });
-        });
-
-        cards.sort(() => Math.random() - 0.5);
-
-        cards.forEach((c, idx) => {
-            const card = document.createElement("div");
-            card.className = "memory-card";
-            card.dataset.id = c.id;
-            card.dataset.index = idx;
-
-            const back = document.createElement("div");
-            back.className = "memory-card-face memory-card-back";
-            back.innerHTML = '<i class="fas fa-question"></i>';
-
-            const front = document.createElement("div");
-            front.className = "memory-card-face memory-card-front";
-            front.textContent = c.text;
-
-            card.appendChild(back);
-            card.appendChild(front);
-
-            card.addEventListener("click", () => flipCard(card, q));
-
-            grid.appendChild(card);
-        });
-
-        questionContainer.appendChild(qDiv);
-        questionContainer.appendChild(grid);
-
-        memoryCards = cards;
-        flippedCards = [];
-        matchedPairs = 0;
-    }
-
-    // =========================
-    // Comprobación de respuestas
-    // =========================
-
-    function selectOption(idx, q) {
-        const opts = document.querySelectorAll(".option");
-        opts.forEach(o => {
-            o.classList.remove("selected", "correct", "incorrect");
-            o.style.pointerEvents = "none";
-        });
-
-        const chosen = opts[idx];
-        chosen.classList.add("selected");
-
-        const isCorrect = idx === q.answer;
-        if (isCorrect) {
-            chosen.classList.add("correct");
-            addScore(q);
-        } else {
-            chosen.classList.add("incorrect");
-            opts[q.answer].classList.add("correct");
-        }
-
-        showFeedback(isCorrect, q.feedback);
-
-        answers.push({
-            question: q.question,
-            userAnswer: q.options[idx],
-            correctAnswer: q.options[q.answer],
-            isCorrect
-        });
-
-        showNavButtons();
-    }
-
-    function selectTrueFalse(value, q) {
-        const opts = document.querySelectorAll(".option");
-        opts.forEach(o => {
-            o.classList.remove("selected", "correct", "incorrect");
-            o.style.pointerEvents = "none";
-        });
-
-        const chosenIndex = value ? 0 : 1;
-        const correctIndex = q.answer ? 0 : 1;
-
-        opts[chosenIndex].classList.add("selected");
-
-        const isCorrect = value === q.answer;
-        if (isCorrect) {
-            opts[chosenIndex].classList.add("correct");
-            addScore(q);
-        } else {
-            opts[chosenIndex].classList.add("incorrect");
-            opts[correctIndex].classList.add("correct");
-        }
-
-        showFeedback(isCorrect, q.feedback);
-
-        answers.push({
-            question: q.question,
-            userAnswer: value ? "Verdadero" : "Falso",
-            correctAnswer: q.answer ? "Verdadero" : "Falso",
-            isCorrect
-        });
-
-        showNavButtons();
-    }
-
-    function toggleCheckbox(idx, el) {
-        if (selectedCheckboxes.includes(idx)) {
-            selectedCheckboxes = selectedCheckboxes.filter(i => i !== idx);
-            el.classList.remove("selected");
-        } else {
-            selectedCheckboxes.push(idx);
-            el.classList.add("selected");
-        }
-    }
-
-    function checkCheckboxAnswer(q, btn) {
-        selectedCheckboxes.sort();
-        const correct = [...q.answer].sort();
-        const isCorrect = JSON.stringify(selectedCheckboxes) === JSON.stringify(correct);
-
-        const opts = document.querySelectorAll(".option");
-        opts.forEach((o, idx) => {
-            o.style.pointerEvents = "none";
-            if (q.answer.includes(idx)) {
-                o.classList.add("correct");
-            } else if (selectedCheckboxes.includes(idx)) {
-                o.classList.add("incorrect");
+            // Functions
+            function startEvaluation() {
+                console.log('Starting evaluation...');
+                welcomeScreen.classList.add('hidden');
+                sectionScreen.classList.remove('hidden');
+                currentSection = 0;
+                currentQuestion = 0;
+                score = 0;
+                answers = [];
+                hintsUsed = 0;
+                showSection();
             }
-        });
 
-        if (isCorrect) {
-            addScore(q);
-        }
-
-        const userAns = selectedCheckboxes.map(i => q.options[i]).join(", ");
-        const corrAns = q.answer.map(i => q.options[i]).join(", ");
-
-        showFeedback(isCorrect, q.feedback);
-        answers.push({
-            question: q.question,
-            userAnswer: userAns || "(sin seleccionar)",
-            correctAnswer: corrAns,
-            isCorrect
-        });
-
-        btn.disabled = true;
-        showNavButtons();
-    }
-
-    function checkMapCapitalDragAnswer(q, btn) {
-        const capitals = document.querySelectorAll(".capital-draggable");
-        let allCorrect = true;
-        q.items.forEach(item => {
-            const el = [...capitals].find(c => c.dataset.id === item.id);
-            if (!el || !el.classList.contains("correct")) {
-                allCorrect = false;
+            function showSection() {
+                const section = sections[currentSection];
+                sectionTitle.textContent = section.title;
+                sectionDescription.textContent = section.description;
+                sectionProgress.style.width = `${(currentSection / sections.length) * 100}%`;
+                sectionProgress.textContent = `${Math.round((currentSection / sections.length) * 100)}%`;
             }
-        });
 
-        if (allCorrect) addScore(q);
-
-        const user = [];
-        const corr = [];
-        q.items.forEach(item => {
-            const el = document.querySelector('[data-id="' + item.id + '"]');
-            const ok = el && el.classList.contains("correct");
-            user.push(item.text + ": " + (ok ? "correcto" : "incorrecto"));
-            corr.push(item.text + " → " + item.correctDept);
-        });
-
-        showFeedback(allCorrect, q.feedback);
-        answers.push({
-            question: q.question,
-            userAnswer: user.join(" | "),
-            correctAnswer: corr.join(" | "),
-            isCorrect: allCorrect
-        });
-
-        btn.disabled = true;
-        showNavButtons();
-    }
-
-    function checkMapRegionDragAnswer(q, btn) {
-        const draggables = document.querySelectorAll(".capital-draggable");
-        let allCorrect = true;
-        q.items.forEach(item => {
-            const el = [...draggables].find(d => d.dataset.id === item.id);
-            if (!el || !el.classList.contains("correct")) {
-                allCorrect = false;
+            function startSection() {
+                sectionScreen.classList.add('hidden');
+                questionScreen.classList.remove('hidden');
+                currentQuestion = 0;
+                showQuestion();
+                startTimer();
             }
-        });
 
-        if (allCorrect) addScore(q);
-
-        const user = [];
-        const corr = [];
-        q.items.forEach(item => {
-            const el = document.querySelector('[data-id="' + item.id + '"]');
-            const ok = el && el.classList.contains("correct");
-            user.push(item.text + ": " + (ok ? "correcto" : "incorrecto"));
-            corr.push(item.text + " → " + item.correctRegion);
-        });
-
-        showFeedback(allCorrect, q.feedback);
-        answers.push({
-            question: q.question,
-            userAnswer: user.join(" | "),
-            correctAnswer: corr.join(" | "),
-            isCorrect: allCorrect
-        });
-
-        btn.disabled = true;
-        showNavButtons();
-    }
-
-    function flipCard(card, q) {
-        if (card.classList.contains("flipped") || card.classList.contains("matched")) return;
-        if (flippedCards.length === 2) return;
-
-        card.classList.add("flipped");
-        flippedCards.push(card);
-
-        if (flippedCards.length === 2) {
-            const [c1, c2] = flippedCards;
-            const match = c1.dataset.id === c2.dataset.id;
-
-            if (match) {
-                setTimeout(() => {
-                    c1.classList.add("matched");
-                    c2.classList.add("matched");
-                    flippedCards = [];
-                    matchedPairs++;
-
-                    if (matchedPairs === q.pairs.length) {
-                        addScore(q);
-                        showFeedback(true, q.feedback);
-                        answers.push({
-                            question: q.question,
-                            userAnswer: "Todos los pares encontrados.",
-                            correctAnswer: "Todos los pares encontrados.",
-                            isCorrect: true
-                        });
-                        showNavButtons();
-                    }
-                }, 350);
-            } else {
-                setTimeout(() => {
-                    c1.classList.remove("flipped");
-                    c2.classList.remove("flipped");
-                    flippedCards = [];
-                }, 650);
-            }
-        }
-    }
-
-    function addScore() {
-        score++;
-        currentScoreSpan.textContent = score;
-    }
-
-    function showFeedback(isCorrect, fb) {
-        feedbackBox.className = "feedback show " + (isCorrect ? "correct" : "incorrect");
-        feedbackBox.textContent = isCorrect ? fb.correct : fb.incorrect;
-        if (isCorrect) spawnConfetti(24);
-    }
-
-    function showNavButtons() {
-        const section = sections[currentSection];
-        if (currentQuestion < section.questions.length - 1) {
-            nextQuestionBtn.classList.remove("hidden");
-        } else {
-            finishSectionBtn.classList.remove("hidden");
-        }
-    }
-
-    // =========================
-    // Drag & drop comunes
-    // =========================
-
-    function dragStartCapital(e) {
-        draggedElement = e.target;
-        e.target.classList.add("dragging");
-    }
-
-    function dragEndCapital(e) {
-        e.target.classList.remove("dragging");
-        draggedElement = null;
-    }
-
-    function dragOverCapital(e) {
-        e.preventDefault();
-        if (e.currentTarget.classList.contains("dept-drop") || e.currentTarget.classList.contains("department")) {
-            e.currentTarget.classList.add("drag-over");
-        }
-    }
-
-    function dragLeaveCapital(e) {
-        e.currentTarget.classList.remove("drag-over");
-    }
-
-    function dropCapital(e) {
-        e.preventDefault();
-        e.currentTarget.classList.remove("drag-over");
-        if (!draggedElement) return;
-
-        const targetId = e.currentTarget.id;
-        const correctDept = draggedElement.dataset.correctDept;
-        const correctRegion = draggedElement.dataset.correctRegion;
-
-        const isCorrect =
-            (correctDept && correctDept === targetId) ||
-            (correctRegion && correctRegion === targetId);
-
-        if (isCorrect) {
-            draggedElement.classList.add("correct");
-            draggedElement.draggable = false;
-
-            if (e.currentTarget.classList.contains("dept-drop")) {
-                // posicionar centrado en la zona
-                const zoneRect = e.currentTarget.getBoundingClientRect();
-                const wrapRect = e.currentTarget.parentElement.getBoundingClientRect();
-                draggedElement.style.position = "absolute";
-                draggedElement.style.left = (zoneRect.left - wrapRect.left + zoneRect.width / 2 - draggedElement.offsetWidth / 2) + "px";
-                draggedElement.style.top = (zoneRect.top - wrapRect.top + zoneRect.height / 2 - draggedElement.offsetHeight / 2) + "px";
-            }
-            if (correctRegion) {
-                draggedElement.classList.add("correct");
-            }
-        } else {
-            draggedElement.classList.add("incorrect");
-            const original = originalPositions[draggedElement.dataset.id];
-            setTimeout(() => {
-                draggedElement.classList.remove("incorrect");
-                if (original && original.parent) {
-                    original.parent.appendChild(draggedElement);
-                    draggedElement.style.position = "";
-                    draggedElement.style.left = "";
-                    draggedElement.style.top = "";
+            function showQuestion() {
+                const section = sections[currentSection];
+                const question = section.questions[currentQuestion];
+                
+                questionProgress.style.width = `${(currentQuestion / section.questions.length) * 100}%`;
+                questionProgress.textContent = `${Math.round((currentQuestion / section.questions.length) * 100)}%`;
+                
+                // Clear previous content
+                questionContainer.innerHTML = '';
+                feedback.classList.remove('show');
+                nextQuestionBtn.classList.add('hidden');
+                finishSectionBtn.classList.add('hidden');
+                selectedCheckboxes = [];
+                hintText.classList.remove('show');
+                
+                // Render question based on type
+                switch (question.type) {
+                    case 'multiple-choice':
+                        renderMultipleChoice(question);
+                        break;
+                    case 'true-false':
+                        renderTrueFalse(question);
+                        break;
+                    case 'checkbox':
+                        renderCheckbox(question);
+                        break;
+                    case 'map-departments':
+                        renderMapDepartments(question);
+                        break;
+                    case 'map-regions':
+                        renderMapRegions(question);
+                        break;
+                    case 'drag-capital-to-department':
+                        renderDragCapitalToDepartment(question);
+                        break;
+                    case 'drag-regions':
+                        renderDragRegions(question);
+                        break;
+                    case 'memory-game':
+                        renderMemoryGame(question);
+                        break;
+                    case 'matching-activity':
+                        renderMatchingActivity(question);
+                        break;
+                    case 'connect-words':
+                        renderConnectWords(question);
+                        break;
+                    default:
+                        console.error('Unknown question type:', question.type);
                 }
-            }, 400);
-        }
+            }
 
-        draggedElement = null;
-    }
+            function renderMultipleChoice(question) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.textContent = question.question;
+                
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+                
+                question.options.forEach((option, index) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option';
+                    optionDiv.textContent = option;
+                    optionDiv.dataset.index = index;
+                    optionDiv.addEventListener('click', () => selectOption(index, question));
+                    optionsDiv.appendChild(optionDiv);
+                });
+                
+                questionContainer.appendChild(questionDiv);
+                questionContainer.appendChild(optionsDiv);
+            }
 
-    // =========================
-    // Navegación secciones
-    // =========================
+            function renderTrueFalse(question) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.textContent = question.question;
+                
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+                
+                const trueOption = document.createElement('div');
+                trueOption.className = 'option';
+                trueOption.textContent = 'Verdadero';
+                trueOption.dataset.value = true;
+                trueOption.addEventListener('click', () => selectTrueFalse(true, question));
+                
+                const falseOption = document.createElement('div');
+                falseOption.className = 'option';
+                falseOption.textContent = 'Falso';
+                falseOption.dataset.value = false;
+                falseOption.addEventListener('click', () => selectTrueFalse(false, question));
+                
+                optionsDiv.appendChild(trueOption);
+                optionsDiv.appendChild(falseOption);
+                
+                questionContainer.appendChild(questionDiv);
+                questionContainer.appendChild(optionsDiv);
+            }
 
-    function nextQuestion() {
-        currentQuestion++;
-        showQuestion();
-    }
+            function renderCheckbox(question) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.textContent = question.question;
+                
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+                
+                question.options.forEach((option, index) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option';
+                    optionDiv.textContent = option;
+                    optionDiv.dataset.index = index;
+                    optionDiv.addEventListener('click', () => toggleCheckbox(index, optionDiv));
+                    optionsDiv.appendChild(optionDiv);
+                });
+                
+                const checkBtn = document.createElement('button');
+                checkBtn.className = 'btn';
+                checkBtn.textContent = 'Verificar respuestas';
+                checkBtn.addEventListener('click', () => checkCheckboxAnswer(question));
+                
+                questionContainer.appendChild(questionDiv);
+                questionContainer.appendChild(optionsDiv);
+                questionContainer.appendChild(checkBtn);
+            }
 
-    function finishSection() {
-        stopTimer();
-        questionScreen.classList.add("hidden");
+            function renderMapDepartments(question) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.textContent = question.question;
+                
+                const mapContainer = document.createElement('div');
+                mapContainer.className = 'map-container';
+                
+                // Create SVG map of Paraguay with departments
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 100 100');
+                svg.setAttribute('class', 'map-svg');
+                
+                // Simplified map of Paraguay with departments
+                const departments = [
+                    { id: 'alto-paraguay', path: 'M 20 10 L 40 10 L 40 30 L 20 30 Z' },
+                    { id: 'boqueron', path: 'M 20 30 L 40 30 L 40 50 L 20 50 Z' },
+                    { id: 'presidente-hayes', path: 'M 20 50 L 40 50 L 40 60 L 20 60 Z' },
+                    { id: 'concepcion', path: 'M 40 10 L 60 10 L 60 30 L 40 30 Z' },
+                    { id: 'san-pedro', path: 'M 40 30 L 60 30 L 60 40 L 40 40 Z' },
+                    { id: 'cordillera', path: 'M 40 40 L 60 40 L 60 50 L 40 50 Z' },
+                    { id: 'central', path: 'M 40 50 L 60 50 L 60 60 L 40 60 Z' },
+                    { id: 'nneembucu', path: 'M 40 60 L 60 60 L 60 70 L 40 70 Z' },
+                    { id: 'amambay', path: 'M 60 10 L 80 10 L 80 30 L 60 30 Z' },
+                    { id: 'canindeyu', path: 'M 80 10 L 90 10 L 90 30 L 80 30 Z' },
+                    { id: 'alto-parana', path: 'M 60 30 L 80 30 L 80 50 L 60 50 Z' },
+                    { id: 'caaguazu', path: 'M 60 50 L 70 50 L 70 60 L 60 60 Z' },
+                    { id: 'guaira', path: 'M 70 50 L 80 50 L 80 60 L 70 60 Z' },
+                    { id: 'caazapa', path: 'M 60 60 L 70 60 L 70 70 L 60 70 Z' },
+                    { id: 'itapua', path: 'M 70 60 L 80 60 L 80 80 L 70 80 Z' },
+                    { id: 'misiones', path: 'M 60 70 L 70 70 L 70 80 L 60 80 Z' },
+                    { id: 'paraguari', path: 'M 50 60 L 60 60 L 60 70 L 50 70 Z' }
+                ];
+                
+                departments.forEach(dept => {
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', dept.path);
+                    path.setAttribute('class', 'department');
+                    path.setAttribute('id', dept.id);
+                    path.addEventListener('click', () => selectDepartment(dept.id, question));
+                    svg.appendChild(path);
+                });
+                
+                mapContainer.appendChild(svg);
+                
+                questionContainer.appendChild(questionDiv);
+                questionContainer.appendChild(mapContainer);
+            }
 
-        if (currentSection < sections.length - 1) {
-            currentSection++;
-            sectionScreen.classList.remove("hidden");
-            updateSectionHeader();
-        } else {
-            showResults();
-        }
-    }
+            function renderMapRegions(question) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.textContent = question.question;
+                
+                const mapContainer = document.createElement('div');
+                mapContainer.className = 'map-container';
+                
+                // Create SVG map of Paraguay with regions
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 100 100');
+                svg.setAttribute('class', 'map-svg');
+                
+                // Simplified map of Paraguay with regions
+                const regions = [
+                    { id: 'occidental', path: 'M 10 10 L 45 10 L 45 70 L 10 70 Z' },
+                    { id: 'oriental', path: 'M 45 10 L 90 10 L 90 70 L 45 70 Z' }
+                ];
+                
+                regions.forEach(region => {
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', region.path);
+                    path.setAttribute('class', 'department');
+                    path.setAttribute('id', region.id);
+                    path.addEventListener('click', () => selectRegion(region.id, question));
+                    svg.appendChild(path);
+                });
+                
+                // Add river Paraguay
+                const river = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                river.setAttribute('d', 'M 45 10 L 45 70');
+                river.setAttribute('stroke', '#36b9cc');
+                river.setAttribute('stroke-width', '2');
+                river.setAttribute('fill', 'none');
+                svg.appendChild(river);
+                
+                mapContainer.appendChild(svg);
+                
+                questionContainer.appendChild(questionDiv);
+                questionContainer.appendChild(mapContainer);
+            }
 
-    function showResults() {
-        const totalQuestions = sections.reduce((acc, s) => acc + s.questions.length, 0);
-        const pct = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
+            function renderDragCapitalToDepartment(question) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.textContent = question.question;
+                
+                const mapContainer = document.createElement('div');
+                mapContainer.className = 'map-container';
+                
+                // Create SVG map of Paraguay with departments
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 100 100');
+                svg.setAttribute('class', 'map-svg');
+                
+                // Simplified map of Paraguay with departments
+                const departments = [
+                    { id: 'dept1', path: 'M 60 30 L 80 30 L 80 50 L 60 50 Z', name: 'Alto Paraná' },
+                    { id: 'dept2', path: 'M 40 50 L 60 50 L 60 60 L 40 60 Z', name: 'Central' },
+                    { id: 'dept3', path: 'M 70 60 L 80 60 L 80 80 L 70 80 Z', name: 'Itapúa' },
+                    { id: 'dept4', path: 'M 40 10 L 60 10 L 60 30 L 40 30 Z', name: 'Concepción' }
+                ];
+                
+                departments.forEach(dept => {
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', dept.path);
+                    path.setAttribute('class', 'department');
+                    path.setAttribute('id', dept.id);
+                    svg.appendChild(path);
+                    
+                    // Add department name
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    text.setAttribute('x', (parseInt(path.getAttribute('d').split(' ')[1]) + parseInt(path.getAttribute('d').split(' ')[3])) / 2);
+                    text.setAttribute('y', (parseInt(path.getAttribute('d').split(' ')[2]) + parseInt(path.getAttribute('d').split(' ')[5])) / 2);
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('font-size', '4');
+                    text.textContent = dept.name;
+                    svg.appendChild(text);
+                });
+                
+                mapContainer.appendChild(svg);
+                
+                // Create drag container for capitals
+                const dragContainer = document.createElement('div');
+                dragContainer.className = 'drag-container';
+                
+                question.items.forEach(item => {
+                    const draggable = document.createElement('div');
+                    draggable.className = 'draggable';
+                    draggable.textContent = item.text;
+                    draggable.draggable = true;
+                    draggable.dataset.id = item.id;
+                    
+                    draggable.addEventListener('dragstart', dragStart);
+                    draggable.addEventListener('dragend', dragEnd);
+                    
+                    // Touch events for mobile
+                    draggable.addEventListener('touchstart', touchStart, {passive: false});
+                    draggable.addEventListener('touchmove', touchMove, {passive: false});
+                    draggable.addEventListener('touchend', touchEnd);
+                    
+                    dragContainer.appendChild(draggable);
+                });
+                
+                // Create drop zones for departments
+                const dropZonesContainer = document.createElement('div');
+                
+                departments.forEach(dept => {
+                    const dropZone = document.createElement('div');
+                    dropZone.className = 'drop-zone';
+                    dropZone.dataset.id = dept.id;
+                    dropZone.dataset.correct = question.dropZones.find(zone => zone.id === dept.id)?.correct || '';
+                    
+                    dropZone.addEventListener('dragover', dragOver);
+                    dropZone.addEventListener('drop', drop);
+                    dropZone.addEventListener('dragleave', dragLeave);
+                    
+                    // Touch events for mobile
+                    dropZone.addEventListener('touchmove', touchMove, {passive: false});
+                    dropZone.addEventListener('touchend', touchEnd);
+                    
+                    dropZonesContainer.appendChild(dropZone);
+                });
+                
+                const checkBtn = document.createElement('button');
+                checkBtn.className = 'btn';
+                checkBtn.textContent = 'Verificar respuestas';
+                checkBtn.addEventListener('click', () => checkDragCapitalToDepartmentAnswer(question));
+                
+                questionContainer.appendChild(questionDiv);
+                questionContainer.appendChild(mapContainer);
+                questionContainer.appendChild(dragContainer);
+                questionContainer.appendChild(dropZonesContainer);
+                questionContainer.appendChild(checkBtn);
+            }
 
-        finalScore.textContent = pct + "%";
+            function renderDragRegions(question) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.textContent = question.question;
+                
+                const mapContainer = document.createElement('div');
+                mapContainer.className = 'map-container';
+                
+                // Create SVG map of Paraguay with regions
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 100 100');
+                svg.setAttribute('class', 'map-svg');
+                
+                // Simplified map of Paraguay with regions
+                const regions = [
+                    { id: 'map-west', path: 'M 10 10 L 45 10 L 45 70 L 10 70 Z' },
+                    { id: 'map-east', path: 'M 45 10 L 90 10 L 90 70 L 45 70 Z' }
+                ];
+                
+                regions.forEach(region => {
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', region.path);
+                    path.setAttribute('class', 'department');
+                    path.setAttribute('id', region.id);
+                    svg.appendChild(path);
+                });
+                
+                // Add river Paraguay
+                const river = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                river.setAttribute('d', 'M 45 10 L 45 70');
+                river.setAttribute('stroke', '#36b9cc');
+                river.setAttribute('stroke-width', '2');
+                river.setAttribute('fill', 'none');
+                svg.appendChild(river);
+                
+                mapContainer.appendChild(svg);
+                
+                // Create drag container for regions
+                const dragContainer = document.createElement('div');
+                dragContainer.className = 'drag-container';
+                
+                question.items.forEach(item => {
+                    const draggable = document.createElement('div');
+                    draggable.className = 'draggable';
+                    draggable.textContent = item.text;
+                    draggable.draggable = true;
+                    draggable.dataset.id = item.id;
+                    
+                    draggable.addEventListener('dragstart', dragStart);
+                    draggable.addEventListener('dragend', dragEnd);
+                    
+                    // Touch events for mobile
+                    draggable.addEventListener('touchstart', touchStart, {passive: false});
+                    draggable.addEventListener('touchmove', touchMove, {passive: false});
+                    draggable.addEventListener('touchend', touchEnd);
+                    
+                    dragContainer.appendChild(draggable);
+                });
+                
+                // Create drop zones for regions
+                const dropZonesContainer = document.createElement('div');
+                dropZonesContainer.style.position = 'relative';
+                dropZonesContainer.style.height = '300px';
+                
+                question.dropZones.forEach(zone => {
+                    const dropZone = document.createElement('div');
+                    dropZone.className = 'drop-zone';
+                    dropZone.style.position = 'absolute';
+                    dropZone.style.width = '100px';
+                    dropZone.style.height = '100px';
+                    dropZone.style.left = zone.x;
+                    dropZone.style.top = zone.y;
+                    dropZone.style.transform = 'translate(-50%, -50%)';
+                    dropZone.dataset.id = zone.id;
+                    dropZone.dataset.correct = zone.correct;
+                    
+                    dropZone.addEventListener('dragover', dragOver);
+                    dropZone.addEventListener('drop', drop);
+                    dropZone.addEventListener('dragleave', dragLeave);
+                    
+                    // Touch events for mobile
+                    dropZone.addEventListener('touchmove', touchMove, {passive: false});
+                    dropZone.addEventListener('touchend', touchEnd);
+                    
+                    dropZonesContainer.appendChild(dropZone);
+                });
+                
+                const checkBtn = document.createElement('button');
+                checkBtn.className = 'btn';
+                checkBtn.textContent = 'Verificar respuestas';
+                checkBtn.addEventListener('click', () => checkDragRegionsAnswer(question));
+                
+                questionContainer.appendChild(questionDiv);
+                questionContainer.appendChild(mapContainer);
+                questionContainer.appendChild(dragContainer);
+                questionContainer.appendChild(dropZonesContainer);
+                questionContainer.appendChild(checkBtn);
+            }
 
-        let msg;
-        if (pct >= 90) {
-            msg = "Excelente desempeño. Dominas muy bien los contenidos trabajados.";
-            spawnConfetti(80);
-        } else if (pct >= 70) {
-            msg = "Muy buen resultado. Un pequeño repaso te ayudará a consolidar todo.";
-        } else if (pct >= 50) {
-            msg = "Aprobado. Conviene repasar algunos temas para mejorar.";
-        } else {
-            msg = "Necesitas reforzar los contenidos. Intenta nuevamente después de estudiar.";
-        }
-        resultMessage.textContent = msg;
+            function renderMemoryGame(question) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.textContent = question.question;
+                
+                const memoryGame = document.createElement('div');
+                memoryGame.className = 'memory-game';
+                
+                // Create cards for each pair (front and back)
+                const cards = [];
+                question.pairs.forEach(pair => {
+                    cards.push({ id: pair.id, text: pair.front, type: 'front' });
+                    cards.push({ id: pair.id, text: pair.back, type: 'back' });
+                });
+                
+                // Shuffle cards
+                cards.sort(() => Math.random() - 0.5);
+                
+                cards.forEach((card, index) => {
+                    const cardDiv = document.createElement('div');
+                    cardDiv.className = 'memory-card';
+                    cardDiv.dataset.id = card.id;
+                    cardDiv.dataset.index = index;
+                    
+                    const cardBack = document.createElement('div');
+                    cardBack.className = 'memory-card-face memory-card-back';
+                    cardBack.innerHTML = '<i class="fas fa-question"></i>';
+                    
+                    const cardFront = document.createElement('div');
+                    cardFront.className = 'memory-card-face memory-card-front';
+                    cardFront.textContent = card.text;
+                    
+                    cardDiv.appendChild(cardBack);
+                    cardDiv.appendChild(cardFront);
+                    
+                    cardDiv.addEventListener('click', () => flipCard(cardDiv, card.id, question));
+                    
+                    memoryGame.appendChild(cardDiv);
+                });
+                
+                questionContainer.appendChild(questionDiv);
+                questionContainer.appendChild(memoryGame);
+                
+                // Reset memory game state
+                memoryCards = cards;
+                flippedCards = [];
+                matchedPairs = 0;
+            }
 
-        resultDetailsList.innerHTML = "";
-        answers.forEach(a => {
-            const li = document.createElement("li");
-            li.innerHTML =
-                "<div><strong>" + a.question + "</strong><br>" +
-                "<small>Tu respuesta: " + a.userAnswer + "</small><br>" +
-                "<small>Correcta: " + a.correctAnswer + "</small></div>" +
-                "<div class='" + (a.isCorrect ? "correct" : "incorrect") + "'>" +
-                "<i class='fas fa-" + (a.isCorrect ? "check" : "times") + "'></i></div>";
-            resultDetailsList.appendChild(li);
-        });
+            function renderMatchingActivity(question) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.textContent = question.question;
+                
+                const matchingContainer = document.createElement('div');
+                matchingContainer.className = 'matching-container';
+                
+                const leftColumn = document.createElement('div');
+                leftColumn.className = 'matching-column';
+                
+                const rightColumn = document.createElement('div');
+                rightColumn.className = 'matching-column';
+                
+                // Shuffle right column items
+                const shuffledRight = [...question.pairs].sort(() => Math.random() - 0.5);
+                
+                question.pairs.forEach((pair, index) => {
+                    const leftItem = document.createElement('div');
+                    leftItem.className = 'matching-item left';
+                    leftItem.textContent = pair.left;
+                    leftItem.dataset.pair = index;
+                    
+                    const rightItem = document.createElement('div');
+                    rightItem.className = 'matching-item right';
+                    rightItem.textContent = shuffledRight[index].right;
+                    rightItem.dataset.pair = index;
+                    rightItem.dataset.original = shuffledRight[index].right;
+                    
+                    leftColumn.appendChild(leftItem);
+                    rightColumn.appendChild(rightItem);
+                });
+                
+                matchingContainer.appendChild(leftColumn);
+                matchingContainer.appendChild(rightColumn);
+                
+                const checkBtn = document.createElement('button');
+                checkBtn.className = 'btn';
+                checkBtn.textContent = 'Verificar respuestas';
+                checkBtn.addEventListener('click', () => checkMatchingAnswer(question));
+                
+                questionContainer.appendChild(questionDiv);
+                questionContainer.appendChild(matchingContainer);
+                questionContainer.appendChild(checkBtn);
+            }
 
-        resultScreen.classList.remove("hidden");
-    }
+            function renderConnectWords(question) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.textContent = question.question;
+                
+                const connectContainer = document.createElement('div');
+                connectContainer.className = 'connect-container';
+                
+                question.words.forEach((pair, index) => {
+                    const connectItem = document.createElement('div');
+                    connectItem.className = 'connect-item';
+                    
+                    const leftWord = document.createElement('div');
+                    leftWord.className = 'connect-word';
+                    leftWord.textContent = pair.left;
+                    leftWord.dataset.pair = index;
+                    
+                    const rightTarget = document.createElement('div');
+                    rightTarget.className = 'connect-target';
+                    rightTarget.textContent = pair.right;
+                    rightTarget.dataset.pair = index;
+                    
+                    connectItem.appendChild(leftWord);
+                    connectItem.appendChild(rightTarget);
+                    connectContainer.appendChild(connectItem);
+                });
+                
+                const checkBtn = document.createElement('button');
+                checkBtn.className = 'btn';
+                checkBtn.textContent = 'Verificar respuestas';
+                checkBtn.addEventListener('click', () => checkConnectWordsAnswer(question));
+                
+                questionContainer.appendChild(questionDiv);
+                questionContainer.appendChild(connectContainer);
+                questionContainer.appendChild(checkBtn);
+            }
 
-    function retryEvaluation() {
-        resultScreen.classList.add("hidden");
-        welcomeScreen.classList.remove("hidden");
-        stopTimer();
-        timerSpan.textContent = "00:00";
-        currentScoreSpan.textContent = "0";
-    }
+            function selectOption(index, question) {
+                const options = document.querySelectorAll('.option');
+                
+                // Remove previous selection
+                options.forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Add selection to clicked option
+                options[index].classList.add('selected');
+                
+                // Check answer
+                const isCorrect = index === question.answer;
+                
+                // Show feedback
+                showFeedback(isCorrect, question.feedback);
+                
+                // Mark correct/incorrect options
+                options[index].classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (!isCorrect) {
+                    options[question.answer].classList.add('correct');
+                }
+                
+                // Disable options
+                options.forEach(option => {
+                    option.style.pointerEvents = 'none';
+                });
+                
+                // Update score
+                if (isCorrect) {
+                    score++;
+                    currentScore.textContent = score;
+                    createConfetti();
+                }
+                
+                // Store answer
+                answers.push({
+                    question: question.question,
+                    userAnswer: question.options[index],
+                    correctAnswer: question.options[question.answer],
+                    isCorrect: isCorrect
+                });
+                
+                // Show next button or finish button
+                if (currentQuestion < sections[currentSection].questions.length - 1) {
+                    nextQuestionBtn.classList.remove('hidden');
+                } else {
+                    finishSectionBtn.classList.remove('hidden');
+                }
+            }
 
-    function goToHome() {
-        resultScreen.classList.add("hidden");
-        welcomeScreen.classList.remove("hidden");
-        stopTimer();
-        timerSpan.textContent = "00:00";
-        currentScoreSpan.textContent = "0";
-    }
+            function selectTrueFalse(value, question) {
+                const options = document.querySelectorAll('.option');
+                
+                // Remove previous selection
+                options.forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Add selection to clicked option
+                options[value ? 0 : 1].classList.add('selected');
+                
+                // Check answer
+                const isCorrect = value === question.answer;
+                
+                // Show feedback
+                showFeedback(isCorrect, question.feedback);
+                
+                // Mark correct/incorrect options
+                options[value ? 0 : 1].classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (!isCorrect) {
+                    options[question.answer ? 0 : 1].classList.add('correct');
+                }
+                
+                // Disable options
+                options.forEach(option => {
+                    option.style.pointerEvents = 'none';
+                });
+                
+                // Update score
+                if (isCorrect) {
+                    score++;
+                    currentScore.textContent = score;
+                    createConfetti();
+                }
+                
+                // Store answer
+                answers.push({
+                    question: question.question,
+                    userAnswer: value ? 'Verdadero' : 'Falso',
+                    correctAnswer: question.answer ? 'Verdadero' : 'Falso',
+                    isCorrect: isCorrect
+                });
+                
+                // Show next button or finish button
+                if (currentQuestion < sections[currentSection].questions.length - 1) {
+                    nextQuestionBtn.classList.remove('hidden');
+                } else {
+                    finishSectionBtn.classList.remove('hidden');
+                }
+            }
 
-    // =========================
-    // Temporizador
-    // =========================
 
-    function startTimer() {
-        stopTimer();
-        startTime = Date.now();
-        timerInterval = setInterval(updateTimer, 1000);
-    }
+                function toggleCheckbox(index, optionDiv) {
+if (selectedCheckboxes.includes(index)) {
+selectedCheckboxes = selectedCheckboxes.filter(i => i !== index);
+optionDiv.classList.remove('selected');
+} else {
+selectedCheckboxes.push(index);
+optionDiv.classList.add('selected');
+}
+}
 
-    function stopTimer() {
-        if (timerInterval) {
-            clearInterval(timerInterval);
-            timerInterval = null;
-        }
-    }
+function checkCheckboxAnswer(question) {
+const isCorrect = JSON.stringify(selectedCheckboxes.sort()) === JSON.stringify(question.answer.sort());
 
-    function updateTimer() {
-        const elapsed = Math.floor((Date.now() - startTime) / 1000);
-        const m = String(Math.floor(elapsed / 60)).padStart(2, "0");
-        const s = String(elapsed % 60).padStart(2, "0");
-        timerSpan.textContent = m + ":" + s;
-    }
+showFeedback(isCorrect, question.feedback);
 
-    // =========================
-    // Confeti
-    // =========================
+// Mark correct/incorrect options
+const options = document.querySelectorAll('.option');
+options.forEach((option, index) => {
+if (question.answer.includes(index)) {
+option.classList.add('correct');
+} else if (selectedCheckboxes.includes(index)) {
+option.classList.add('incorrect');
+}
+option.style.pointerEvents = 'none';
+});
 
-    function spawnConfetti(n) {
-        const colors = ["#4e73df", "#1cc88a", "#f6c23e", "#e74a3b", "#36b9cc"];
-        for (let i = 0; i < n; i++) {
-            const c = document.createElement("div");
-            c.className = "confetti";
-            c.style.left = Math.random() * 100 + "vw";
-            const size = 6 + Math.random() * 8;
-            c.style.width = size + "px";
-            c.style.height = size + "px";
-            c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            document.body.appendChild(c);
-            setTimeout(() => c.remove(), 4000);
-        }
-    }
-</script>
-</body>
+// Update score
+if (isCorrect) {
+score++;
+currentScore.textContent = score;
+createConfetti();
+}
+
+// Store answer
+const userAnswers = selectedCheckboxes.map(i => question.options[i]).join(', ');
+const correctAnswers = question.answer.map(i => question.options[i]).join(', ');
+
+answers.push({
+question: question.question,
+userAnswer: userAnswers,
+correctAnswer: correctAnswers,
+isCorrect: isCorrect
+});
+
+// Show next button or finish button
+if (currentQuestion < sections[currentSection].questions.length - 1) {
+nextQuestionBtn.classList.remove('hidden');
+} else {
+finishSectionBtn.classList.remove('hidden');
+}
+}
+
+function selectDepartment(deptId, question) {
+const departments = document.querySelectorAll('.department');
+
+// Remove previous selection
+departments.forEach(dept => {
+dept.classList.remove('highlight');
+});
+
+// Add selection to clicked department
+document.getElementById(deptId).classList.add('highlight');
+
+// Check answer
+const isCorrect = deptId === question.answer;
+
+// Show feedback
+showFeedback(isCorrect, question.feedback);
+
+// Mark correct/incorrect department
+document.getElementById(deptId).classList.add(isCorrect ? 'correct' : 'incorrect');
+if (!isCorrect) {
+document.getElementById(question.answer).classList.add('correct');
+}
+
+// Disable departments
+departments.forEach(dept => {
+dept.style.pointerEvents = 'none';
+});
+
+// Update score
+if (isCorrect) {
+score++;
+currentScore.textContent = score;
+createConfetti();
+}
+
+// Store answer
+const deptName = paraguayMap.departments.find(d => d.id === deptId)?.name || deptId;
+const correctDeptName = paraguayMap.departments.find(d => d.id === question.answer)?.name || question.answer;
+
+answers.push({
+question: question.question,
+userAnswer: deptName,
+correctAnswer: correctDeptName,
+isCorrect: isCorrect
+});
+
+// Show next button or finish button
+if (currentQuestion < sections[currentSection].questions.length - 1) {
+nextQuestionBtn.classList.remove('hidden');
+} else {
+finishSectionBtn.classList.remove('hidden');
+}
+}
+
+function selectRegion(regionId, question) {
+const regions = document.querySelectorAll('.department');
+
+// Remove previous selection
+regions.forEach(region => {
+region.classList.remove('highlight');
+});
+
+// Add selection to clicked region
+document.getElementById(regionId).classList.add('highlight');
+
+// Check answer
+const isCorrect = regionId === question.answer;
+
+// Show feedback
+showFeedback(isCorrect, question.feedback);
+
+// Mark correct/incorrect region
+document.getElementById(regionId).classList.add(isCorrect ? 'correct' : 'incorrect');
+if (!isCorrect) {
+document.getElementById(question.answer).classList.add('correct');
+}
+
+// Disable regions
+regions.forEach(region => {
+region.style.pointerEvents = 'none';
+});
+
+// Update score
+if (isCorrect) {
+score++;
+currentScore.textContent = score;
+createConfetti();
+}
+
+// Store answer
+const regionName = regionId === 'oriental' ? 'Región Oriental' : 'Región Occidental';
+const correctRegionName = question.answer === 'oriental' ? 'Región Oriental' : 'Región Occidental';
+
+answers.push({
+question: question.question,
+userAnswer: regionName,
+correctAnswer: correctRegionName,
+isCorrect: isCorrect
+});
+
+// Show next button or finish button
+if (currentQuestion < sections[currentSection].questions.length - 1) {
+nextQuestionBtn.classList.remove('hidden');
+} else {
+finishSectionBtn.classList.remove('hidden');
+}
+}
+
+function dragStart(e) {
+draggedElement = e.target;
+originalParent = e.target.parentNode;
+e.target.classList.add('dragging');
+e.dataTransfer.effectAllowed = 'move';
+e.dataTransfer.setData('text/html', e.target.innerHTML);
+}
+
+function dragEnd(e) {
+e.target.classList.remove('dragging');
+}
+
+function dragOver(e) {
+if (e.preventDefault) {
+e.preventDefault();
+}
+e.dataTransfer.dropEffect = 'move';
+e.currentTarget.classList.add('drag-over');
+return false;
+}
+
+function dragLeave(e) {
+e.currentTarget.classList.remove('drag-over');
+}
+
+function drop(e) {
+if (e.stopPropagation) {
+e.stopPropagation();
+}
+
+e.currentTarget.classList.remove('drag-over');
+
+if (draggedElement && e.currentTarget.classList.contains('drop-zone')) {
+// Check if drop zone already has content
+if (e.currentTarget.children.length === 0) {
+// Clone the dragged element
+const clone = draggedElement.cloneNode(true);
+clone.classList.remove('dragging');
+clone.style.margin = '0';
+
+// Add to drop zone
+e.currentTarget.appendChild(clone);
+
+// Hide original from drag container
+draggedElement.style.display = 'none';
+}
+}
+
+return false;
+}
+
+// Touch events for mobile
+function touchStart(e) {
+const touch = e.touches[0];
+draggedElement = e.target;
+originalParent = e.target.parentNode;
+draggedElement.classList.add('dragging');
+draggedElement.style.position = 'fixed';
+draggedElement.style.zIndex = '1000';
+draggedElement.style.left = touch.clientX - draggedElement.offsetWidth / 2 + 'px';
+draggedElement.style.top = touch.clientY - draggedElement.offsetHeight / 2 + 'px';
+}
+
+function touchMove(e) {
+e.preventDefault();
+const touch = e.touches[0];
+draggedElement.style.left = touch.clientX - draggedElement.offsetWidth / 2 + 'px';
+draggedElement.style.top = touch.clientY - draggedElement.offsetHeight / 2 + 'px';
+}
+
+function touchEnd(e) {
+draggedElement.classList.remove('dragging');
+draggedElement.style.position = '';
+draggedElement.style.zIndex = '';
+draggedElement.style.left = '';
+draggedElement.style.top = '';
+
+// Find the element below the dragged element
+const elementBelow = document.elementFromPoint(
+e.changedTouches[0].clientX,
+e.changedTouches[0].clientY
+);
+
+if (elementBelow && elementBelow.classList.contains('drop-zone')) {
+// Check if drop zone already has content
+if (elementBelow.children.length === 0) {
+// Clone the dragged element
+const clone = draggedElement.cloneNode(true);
+clone.classList.remove('dragging');
+clone.style.margin = '0';
+
+// Add to drop zone
+elementBelow.appendChild(clone);
+
+// Hide original from drag container
+draggedElement.style.display = 'none';
+}
+}
+}
+
+function checkDragCapitalToDepartmentAnswer(question) {
+const dropZones = document.querySelectorAll('.drop-zone');
+let allCorrect = true;
+
+dropZones.forEach(zone => {
+const droppedItem = zone.querySelector('.draggable');
+if (droppedItem) {
+if (droppedItem.dataset.id === zone.dataset.correct) {
+zone.classList.add('correct');
+} else {
+zone.classList.add('incorrect');
+allCorrect = false;
+
+// Return incorrect item to its original position
+const originalItem = originalParent.querySelector(`[data-id="${droppedItem.dataset.id}"]`);
+if (originalItem) {
+originalItem.style.display = 'block';
+originalItem.classList.add('returning');
+setTimeout(() => {
+originalItem.classList.remove('returning');
+}, 800);
+}
+
+// Remove from drop zone
+zone.innerHTML = '';
+}
+} else {
+zone.classList.add('incorrect');
+allCorrect = false;
+}
+});
+
+showFeedback(allCorrect, question.feedback);
+
+// Update score
+if (allCorrect) {
+score++;
+currentScore.textContent = score;
+createConfetti();
+}
+
+// Store answer
+const userAnswers = [];
+const correctAnswers = [];
+
+dropZones.forEach(zone => {
+const droppedItem = zone.querySelector('.draggable');
+if (droppedItem) {
+userAnswers.push(`${zone.textContent}: ${droppedItem.textContent}`);
+} else {
+userAnswers.push(`${zone.textContent}: (sin respuesta)`);
+}
+
+const correctItem = question.items.find(item => item.id === zone.dataset.correct);
+if (correctItem) {
+correctAnswers.push(`${zone.textContent}: ${correctItem.text}`);
+}
+});
+
+answers.push({
+question: question.question,
+userAnswer: userAnswers.join(', '),
+correctAnswer: correctAnswers.join(', '),
+isCorrect: allCorrect
+});
+
+// Show next button or finish button
+if (currentQuestion < sections[currentSection].questions.length - 1) {
+nextQuestionBtn.classList.remove('hidden');
+} else {
+finishSectionBtn.classList.remove('hidden');
+}
+}
+
+function checkDragRegionsAnswer(question) {
+const dropZones = document.querySelectorAll('.drop-zone');
+let allCorrect = true;
+
+dropZones.forEach(zone => {
+const droppedItem = zone.querySelector('.draggable');
+if (droppedItem) {
+if (droppedItem.dataset.id === zone.dataset.correct) {
+zone.classList.add('correct');
+} else {
+zone.classList.add('incorrect');
+allCorrect = false;
+
+// Return incorrect item to its original position
+const originalItem = originalParent.querySelector(`[data-id="${droppedItem.dataset.id}"]`);
+if (originalItem) {
+originalItem.style.display = 'block';
+originalItem.classList.add('returning');
+setTimeout(() => {
+originalItem.classList.remove('returning');
+}, 800);
+}
+
+// Remove from drop zone
+zone.innerHTML = '';
+}
+} else {
+zone.classList.add('incorrect');
+allCorrect = false;
+}
+});
+
+showFeedback(allCorrect, question.feedback);
+
+// Update score
+if (allCorrect) {
+score++;
+currentScore.textContent = score;
+createConfetti();
+}
+
+// Store answer
+const userAnswers = [];
+const correctAnswers = [];
+
+dropZones.forEach(zone => {
+const droppedItem = zone.querySelector('.draggable');
+if (droppedItem) {
+userAnswers.push(droppedItem.textContent);
+} else {
+userAnswers.push('(sin respuesta)');
+}
+
+const correctItem = question.items.find(item => item.id === zone.dataset.correct);
+if (correctItem) {
+correctAnswers.push(correctItem.text);
+}
+});
+
+answers.push({
+question: question.question,
+userAnswer: userAnswers.join(', '),
+correctAnswer: correctAnswers.join(', '),
+isCorrect: allCorrect
+});
+
+// Show next button or finish button
+if (currentQuestion < sections[currentSection].questions.length - 1) {
+nextQuestionBtn.classList.remove('hidden');
+} else {
+finishSectionBtn.classList.remove('hidden');
+}
+}
+
+function flipCard(cardDiv, cardId, question) {
+// Check if card is already flipped or matched
+if (cardDiv.classList.contains('flipped') || cardDiv.classList.contains('matched')) {
+return;
+}
+
+// Check if two cards are already flipped
+if (flippedCards.length >= 2) {
+return;
+}
+
+// Flip card
+cardDiv.classList.add('flipped');
+flippedCards.push({ element: cardDiv, id: cardId });
+
+// Check if two cards are flipped
+if (flippedCards.length === 2) {
+// Check if cards match
+if (flippedCards[0].id === flippedCards[1].id) {
+// Cards match
+setTimeout(() => {
+flippedCards[0].element.classList.add('matched');
+flippedCards[1].element.classList.add('matched');
+flippedCards = [];
+matchedPairs++;
+
+// Check if all pairs are matched
+if (matchedPairs === question.pairs.length) {
+// All pairs matched
+const isCorrect = true;
+showFeedback(isCorrect, question.feedback);
+
+// Update score
+if (isCorrect) {
+score++;
+currentScore.textContent = score;
+createConfetti();
+}
+
+// Store answer
+answers.push({
+question: question.question,
+userAnswer: 'Todos los pares encontrados',
+correctAnswer: 'Todos los pares encontrados',
+isCorrect: isCorrect
+});
+
+// Show next button or finish button
+if (currentQuestion < sections[currentSection].questions.length - 1) {
+nextQuestionBtn.classList.remove('hidden');
+} else {
+finishSectionBtn.classList.remove('hidden');
+}
+}
+}, 1000);
+} else {
+// Cards don't match
+setTimeout(() => {
+flippedCards[0].element.classList.remove('flipped');
+flippedCards[1].element.classList.remove('flipped');
+flippedCards = [];
+}, 1000);
+}
+}
+}
+
+function checkMatchingAnswer(question) {
+const rightItems = document.querySelectorAll('.matching-item.right');
+let allCorrect = true;
+
+rightItems.forEach((rightItem, index) => {
+const leftItem = document.querySelector(`.matching-item.left[data-pair="${index}"]`);
+const originalPair = question.pairs.find(p => p.right === rightItem.textContent);
+
+if (leftItem && leftItem.dataset.pair === index) {
+const isCorrect = originalPair.left === leftItem.textContent;
+if (!isCorrect) {
+allCorrect = false;
+}
+
+// Create line
+const line = document.createElement('div');
+line.className = `matching-line ${isCorrect ? 'correct' : 'incorrect'}`;
+line.style.left = '100%';
+line.style.width = '2rem';
+
+leftItem.appendChild(line);
+rightItem.appendChild(line);
+} else {
+allCorrect = false;
+}
+});
+
+showFeedback(allCorrect, question.feedback);
+
+// Update score
+if (allCorrect) {
+score++;
+currentScore.textContent = score;
+createConfetti();
+}
+
+// Store answer
+const userAnswers = [];
+const correctAnswers = [];
+
+rightItems.forEach((rightItem, index) => {
+const leftItem = document.querySelector(`.matching-item.left[data-pair="${index}"]`);
+if (leftItem) {
+userAnswers.push(`${leftItem.textContent} - ${rightItem.textContent}`);
+} else {
+userAnswers.push(`(sin respuesta) - ${rightItem.textContent}`);
+}
+
+const originalPair = question.pairs.find(p => p.right === rightItem.textContent);
+if (originalPair) {
+correctAnswers.push(`${originalPair.left} - ${originalPair.right}`);
+}
+});
+
+answers.push({
+question: question.question,
+userAnswer: userAnswers.join(', '),
+correctAnswer: correctAnswers.join(', '),
+isCorrect: allCorrect
+});
+
+// Show next button or finish button
+if (currentQuestion < sections[currentSection].questions.length - 1) {
+nextQuestionBtn.classList.remove('hidden');
+} else {
+finishSectionBtn.classList.remove('hidden');
+}
+}
+
+function checkConnectWordsAnswer(question) {
+const connectTargets = document.querySelectorAll('.connect-target');
+let allCorrect = true;
+
+connectTargets.forEach((target, index) => {
+const word = document.querySelector(`.connect-word[data-pair="${index}"]`);
+const originalPair = question.words.find(p => p.right === target.textContent);
+
+if (word && word.dataset.pair === index) {
+const isCorrect = originalPair.left === word.textContent;
+if (!isCorrect) {
+allCorrect = false;
+}
+
+target.classList.add(isCorrect ? 'connected' : 'incorrect');
+} else {
+allCorrect = false;
+target.classList.add('incorrect');
+}
+});
+
+showFeedback(allCorrect, question.feedback);
+
+// Update score
+if (allCorrect) {
+score++;
+currentScore.textContent = score;
+createConfetti();
+}
+
+// Store answer
+const userAnswers = [];
+const correctAnswers = [];
+
+connectTargets.forEach((target, index) => {
+const word = document.querySelector(`.connect-word[data-pair="${index}"]`);
+if (word) {
+userAnswers.push(`${word.textContent} - ${target.textContent}`);
+} else {
+userAnswers.push(`(sin respuesta) - ${target.textContent}`);
+}
+
+const originalPair = question.words.find(p => p.right === target.textContent);
+if (originalPair) {
+correctAnswers.push(`${originalPair.left} - ${originalPair.right}`);
+}
+});
+
+answers.push({
+question: question.question,
+userAnswer: userAnswers.join(', '),
+correctAnswer: correctAnswers.join(', '),
+isCorrect: allCorrect
+});
+
+// Show next button or finish button
+if (currentQuestion < sections[currentSection].questions.length - 1) {
+nextQuestionBtn.classList.remove('hidden');
+} else {
+finishSectionBtn.classList.remove('hidden');
+}
+}
+
+function showFeedback(isCorrect, feedback) {
+const feedbackDiv = document.getElementById('feedback');
+feedbackDiv.textContent = isCorrect ? feedback.correct : feedback.incorrect;
+feedbackDiv.className = `feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+}
+
+function showHint() {
+const section = sections[currentSection];
+const question = section.questions[currentQuestion];
+
+hintText.textContent = question.hint;
+hintText.classList.add('show');
+hintsUsed++;
+}
+
+function createConfetti() {
+const colors = ['#f6c23e', '#1cc88a', '#4e73df', '#e74a3b', '#36b9cc'];
+
+for (let i = 0; i < 30; i++) {
+setTimeout(() => {
+const confetti = document.createElement('div');
+confetti.className = 'confetti';
+confetti.style.left = Math.random() * window.innerWidth + 'px';
+confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+confetti.style.top = '-10px';
+confetti.style.animation = `confettiFall ${2 + Math.random() * 2}s ease-out`;
+document.body.appendChild(confetti);
+
+setTimeout(() => {
+confetti.remove();
+}, 3000);
+}, i * 50);
+}
+}
+
+function nextQuestion() {
+currentQuestion++;
+showQuestion();
+}
+
+function finishSection() {
+stopTimer();
+
+if (currentSection < sections.length - 1) {
+currentSection++;
+questionScreen.classList.add('hidden');
+sectionScreen.classList.remove('hidden');
+showSection();
+} else {
+showResults();
+}
+}
+
+function showResults() {
+stopTimer();
+
+questionScreen.classList.add('hidden');
+resultScreen.classList.remove('hidden');
+
+const totalQuestions = sections.reduce((sum, section) => sum + section.questions.length, 0);
+const percentage = Math.round((score / totalQuestions) * 100);
+
+finalScore.textContent = `${percentage}%`;
+
+// Set result message based on percentage
+let message = '';
+if (percentage >= 90) {
+message = '¡Excelente! Has demostrado un conocimiento sobresaliente sobre Ciencias Sociales de Paraguay. ¡Sigue así!';
+} else if (percentage >= 70) {
+message = '¡Muy bien! Tienes un buen conocimiento sobre Ciencias Sociales de Paraguay. ¡Sigue estudiando para mejorar!';
+} else if (percentage >= 50) {
+message = '¡Bien hecho! Has aprobado la evaluación. Te recomendamos repasar algunos temas para fortalecer tus conocimientos.';
+} else {
+message = 'Necesitas mejorar tu conocimiento sobre Ciencias Sociales de Paraguay. Te recomendamos estudiar más e intentar la evaluación nuevamente.';
+}
+
+resultMessage.textContent = message;
+
+// Show result details
+resultDetailsList.innerHTML = '';
+answers.forEach(answer => {
+const li = document.createElement('li');
+li.innerHTML = `
+<div>
+<strong>${answer.question}</strong><br>
+<small>Tu respuesta: ${answer.userAnswer}</small><br>
+<small>Respuesta correcta: ${answer.correctAnswer}</small>
+</div>
+<div class="${answer.isCorrect ? 'correct' : 'incorrect'}">
+<i class="fas fa-${answer.isCorrect ? 'check' : 'times'}"></i>
+</div>
+`;
+resultDetailsList.appendChild(li);
+});
+
+// Create confetti for good results
+if (percentage >= 70) {
+createConfetti();
+}
+}
+
+function retryEvaluation() {
+resultScreen.classList.add('hidden');
+welcomeScreen.classList.remove('hidden');
+}
+
+function goToHome() {
+resultScreen.classList.add('hidden');
+welcomeScreen.classList.remove('hidden');
+}
+
+function startTimer() {
+startTime = Date.now();
+timerInterval = setInterval(updateTimer, 1000);
+}
+
+function stopTimer() {
+clearInterval(timerInterval);
+}
+
+function updateTimer() {
+const elapsed = Math.floor((Date.now() - startTime) / 1000);
+const minutes = Math.floor(elapsed / 60);
+const seconds = elapsed % 60;
+timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+// Initialize the application
+init();
+});
+</script></body>
 </html>
